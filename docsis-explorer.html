@@ -15,6 +15,1061 @@ tailwind = { config: { theme: { extend: {
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  body { background: #0f1117; }
+  .gradient-text-31   { background: linear-gradient(135deg, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gradient-text-31p  { background: linear-gradient(135deg, #a855f7, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gradient-text-40   { background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gradient-text-neon { background: linear-gradient(135deg, #00d4ff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .card-glow-31  { box-shadow: 0 0 30px rgba(59,130,246,0.15); }
+  .card-glow-31p { box-shadow: 0 0 30px rgba(168,85,247,0.15); }
+  .card-glow-40  { box-shadow: 0 0 30px rgba(16,185,129,0.15); }
+  .card-glow-neon{ box-shadow: 0 0 30px rgba(0,212,255,0.15); }
+  .hero-gradient { background: radial-gradient(ellipse at 30% 40%, rgba(59,130,246,0.12) 0%, transparent 60%),
+                               radial-gradient(ellipse at 70% 60%, rgba(168,85,247,0.10) 0%, transparent 60%),
+                               radial-gradient(ellipse at 50% 0%,  rgba(0,212,255,0.08)  0%, transparent 50%),
+                               #0f1117; }
+  .grid-bg { background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+             background-size: 40px 40px; }
+  input[type=range] { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 9999px; outline: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; cursor: pointer; border: 2px solid #0f1117; }
+  .slider-31::-webkit-slider-thumb   { background: #3b82f6; }
+  .slider-31p::-webkit-slider-thumb  { background: #a855f7; }
+  .slider-40::-webkit-slider-thumb   { background: #10b981; }
+  .slider-neon::-webkit-slider-thumb { background: #00d4ff; }
+  .slider-31  { background: linear-gradient(to right, #3b82f6 var(--val,50%), #374151 var(--val,50%)); }
+  .slider-31p { background: linear-gradient(to right, #a855f7 var(--val,50%), #374151 var(--val,50%)); }
+  .slider-40  { background: linear-gradient(to right, #10b981 var(--val,50%), #374151 var(--val,50%)); }
+  .slider-neon{ background: linear-gradient(to right, #00d4ff var(--val,50%), #374151 var(--val,50%)); }
+  .bar-animate { transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+  table thead th { position: sticky; top: 0; }
+  .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; }
+</style>
 </head>
-<body>placeholder</body>
+<body class="font-sans text-gray-100 min-h-screen">
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-xl bg-black/40">
+  <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+    <span class="font-display font-700 text-lg tracking-tight">
+      <span class="gradient-text-neon">DOCSIS</span><span class="text-white/60 font-light"> Explorer</span>
+    </span>
+    <div class="hidden sm:flex items-center gap-6 text-sm text-gray-400">
+      <a href="#metrics"    class="hover:text-white transition-colors">Metrics</a>
+      <a href="#calculator" class="hover:text-white transition-colors">Calculator</a>
+      <a href="#charts"     class="hover:text-white transition-colors">Charts</a>
+      <a href="#ofdm-table" class="hover:text-white transition-colors">OFDM Table</a>
+      <a href="#technology" class="hover:text-white transition-colors">Technology</a>
+    </div>
+    <span class="text-xs text-gray-600 font-mono">v2025.1</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════ -->
+<header class="hero-gradient grid-bg pt-32 pb-24 px-6 relative overflow-hidden">
+  <!-- decorative blobs -->
+  <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-docsis31/10 blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-20 -right-20 w-80 h-80 rounded-full bg-docsis31p/10 blur-3xl pointer-events-none"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-neon/5 blur-3xl pointer-events-none"></div>
+
+  <div class="max-w-5xl mx-auto text-center relative z-10">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-neon/30 bg-neon/5 text-neon text-xs font-semibold tracking-widest uppercase mb-6">
+      Bandwidth &amp; Capacity Reference
+    </div>
+    <h1 class="font-display text-5xl sm:text-7xl font-700 tracking-tight mb-6 leading-none">
+      <span class="gradient-text-neon">DOCSIS</span><br>
+      <span class="text-white">Explorer</span>
+    </h1>
+    <p class="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
+      Compare bandwidth capabilities across
+      <span class="text-docsis31 font-semibold">DOCSIS&nbsp;3.1</span>,
+      <span class="text-docsis31p font-semibold">DOCSIS&nbsp;3.1+</span>, and
+      <span class="text-docsis40 font-semibold">DOCSIS&nbsp;4.0</span> —
+      from OFDM fundamentals to full-duplex symmetric gigabit broadband.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3 text-sm">
+      <span class="badge bg-docsis31/20 text-docsis31 border border-docsis31/30">SC-QAM + OFDM</span>
+      <span class="badge bg-docsis31p/20 text-docsis31p border border-docsis31p/30">Full Duplex OFDMA</span>
+      <span class="badge bg-docsis40/20 text-docsis40 border border-docsis40/30">ESD &amp; FDX</span>
+      <span class="badge bg-neon/20 text-neon border border-neon/30">Up to 10 Gbps ↓</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════
+     KEY METRICS CARDS
+═══════════════════════════════════════════════════════════ -->
+<section id="metrics" class="max-w-7xl mx-auto px-6 py-16">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl font-700 text-white mb-3">Key Performance Metrics</h2>
+    <p class="text-gray-500 text-sm">Maximum theoretical throughput per DOCSIS generation</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <!-- DOCSIS 3.1 -->
+    <div class="card-glow-31 rounded-2xl border border-docsis31/20 bg-gray-900/60 backdrop-blur p-8 relative overflow-hidden group hover:border-docsis31/40 transition-all duration-300">
+      <div class="absolute top-0 right-0 w-40 h-40 rounded-full bg-docsis31/10 blur-2xl -translate-y-10 translate-x-10 group-hover:bg-docsis31/20 transition-all"></div>
+      <div class="relative z-10">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-xs font-semibold tracking-widest text-docsis31/70 uppercase">DOCSIS</span>
+            <div class="font-display text-4xl font-700 gradient-text-31 leading-none mt-0.5">3.1</div>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-docsis31/15 flex items-center justify-center border border-docsis31/20">
+            <svg class="w-6 h-6 text-docsis31" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="bg-black/30 rounded-xl p-4 border border-white/5">
+            <div class="text-xs text-gray-500 mb-1 uppercase tracking-wider">Downstream (Max)</div>
+            <div class="text-2xl font-display font-700 text-docsis31">10 <span class="text-lg">Gbps</span></div>
+            <div class="text-xs text-gray-600 mt-1">32 OFDM channels × 192 MHz</div>
+          </div>
+          <div class="bg-black/30 rounded-xl p-4 border border-white/5">
+            <div class="text-xs text-gray-500 mb-1 uppercase tracking-wider">Upstream (Max)</div>
+            <div class="text-2xl font-display font-700 text-docsis31">1–2 <span class="text-lg">Gbps</span></div>
+            <div class="text-xs text-gray-600 mt-1">OFDMA, shared upstream</div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
+              <div class="text-xs text-gray-600 mb-1">Modulation</div>
+              <div class="text-sm font-semibold text-white">4096-QAM</div>
+            </div>
+            <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
+              <div class="text-xs text-gray-600 mb-1">Duplex</div>
+              <div class="text-sm font-semibold text-white">HFC TDD</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCSIS 3.1+ -->
+    <div class="card-glow-31p rounded-2xl border border-docsis31p/20 bg-gray-900/60 backdrop-blur p-8 relative overflow-hidden group hover:border-docsis31p/40 transition-all duration-300">
+      <div class="absolute top-0 right-0 w-40 h-40 rounded-full bg-docsis31p/10 blur-2xl -translate-y-10 translate-x-10 group-hover:bg-docsis31p/20 transition-all"></div>
+      <div class="relative z-10">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-xs font-semibold tracking-widest text-docsis31p/70 uppercase">DOCSIS</span>
+            <div class="font-display text-4xl font-700 gradient-text-31p leading-none mt-0.5">3.1+</div>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-docsis31p/15 flex items-center justify-center border border-docsis31p/20">
+            <svg class="w-6 h-6 text-docsis31p" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="bg-black/30 rounded-xl p-4 border border-white/5">
+            <div class="text-xs text-gray-500 mb-1 uppercase tracking-wider">Downstream (Max)</div>
+            <div class="text-2xl font-display font-700 text-docsis31p">10 <span class="text-lg">Gbps</span></div>
+            <div class="text-xs text-gray-600 mt-1">Full duplex OFDM spectrum</div>
+          </div>
+          <div class="bg-black/30 rounded-xl p-4 border border-white/5">
+            <div class="text-xs text-gray-500 mb-1 uppercase tracking-wider">Upstream (Max)</div>
+            <div class="text-2xl font-display font-700 text-docsis31p">~6 <span class="text-lg">Gbps</span></div>
+            <div class="text-xs text-gray-600 mt-1">Full duplex OFDMA upstream</div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
+              <div class="text-xs text-gray-600 mb-1">Modulation</div>
+              <div class="text-sm font-semibold text-white">4096-QAM</div>
+            </div>
+            <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
+              <div class="text-xs text-gray-600 mb-1">Duplex</div>
+              <div class="text-sm font-semibold text-white">FDX OFDMA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCSIS 4.0 -->
+    <div class="card-glow-40 rounded-2xl border border-docsis40/20 bg-gray-900/60 backdrop-blur p-8 relative overflow-hidden group hover:border-docsis40/40 transition-all duration-300">
+      <div class="absolute top-0 right-0 w-40 h-40 rounded-full bg-docsis40/10 blur-2xl -translate-y-10 translate-x-10 group-hover:bg-docsis40/20 transition-all"></div>
+      <div class="relative z-10">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-xs font-semibold tracking-widest text-docsis40/70 uppercase">DOCSIS</span>
+            <div class="font-display text-4xl font-700 gradient-text-40 leading-none mt-0.5">4.0</div>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-docsis40/15 flex items-center justify-center border border-docsis40/20">
+            <svg class="w-6 h-6 text-docsis40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="bg-black/30 rounded-xl p-4 border border-white/5">
+            <div class="text-xs text-gray-500 mb-1 uppercase tracking-wider">Downstream (Max)</div>
+            <div class="text-2xl font-display font-700 text-docsis40">10 <span class="text-lg">Gbps</span></div>
+            <div class="text-xs text-gray-600 mt-1">ESD + FDX extended spectrum</div>
+          </div>
+          <div class="bg-black/30 rounded-xl p-4 border border-white/5">
+            <div class="text-xs text-gray-500 mb-1 uppercase tracking-wider">Upstream (Max)</div>
+            <div class="text-2xl font-display font-700 text-docsis40">6 <span class="text-lg">Gbps</span></div>
+            <div class="text-xs text-gray-600 mt-1">Extended spectrum, symmetric</div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
+              <div class="text-xs text-gray-600 mb-1">Modulation</div>
+              <div class="text-sm font-semibold text-white">4096-QAM</div>
+            </div>
+            <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
+              <div class="text-xs text-gray-600 mb-1">Duplex</div>
+              <div class="text-sm font-semibold text-white">ESD / FDX</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CHARTS
+═══════════════════════════════════════════════════════════ -->
+<section id="charts" class="max-w-7xl mx-auto px-6 py-16">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl font-700 text-white mb-3">Throughput Comparison</h2>
+    <p class="text-gray-500 text-sm">Visual overview of downstream and upstream capacity by standard</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- Bar Chart -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+      <h3 class="font-display font-600 text-white mb-1">Max Throughput (Gbps)</h3>
+      <p class="text-xs text-gray-500 mb-6">Downstream vs Upstream per DOCSIS version</p>
+      <div class="relative h-72">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Radar Chart -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+      <h3 class="font-display font-600 text-white mb-1">Capability Radar</h3>
+      <p class="text-xs text-gray-500 mb-6">Multi-dimensional comparison across key attributes</p>
+      <div class="relative h-72">
+        <canvas id="radarChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Horizontal speed comparison bars -->
+  <div class="mt-8 rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-8">
+    <h3 class="font-display font-600 text-white mb-6">Downstream Speed Comparison</h3>
+    <div class="space-y-5" id="speedBars"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     INTERACTIVE CALCULATOR
+═══════════════════════════════════════════════════════════ -->
+<section id="calculator" class="max-w-7xl mx-auto px-6 py-16">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl font-700 text-white mb-3">OFDM Capacity Calculator</h2>
+    <p class="text-gray-500 text-sm">Adjust parameters to compute theoretical channel capacity in real time</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-5 gap-8">
+
+    <!-- Controls -->
+    <div class="xl:col-span-2 space-y-6">
+
+      <!-- Channel Width -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <label class="block text-sm font-semibold text-gray-300 mb-4">Channel Width</label>
+        <div class="flex gap-2 flex-wrap">
+          <button onclick="setChannelWidth(24)"  id="cw-24"  class="cw-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all">24 MHz</button>
+          <button onclick="setChannelWidth(96)"  id="cw-96"  class="cw-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all">96 MHz</button>
+          <button onclick="setChannelWidth(192)" id="cw-192" class="cw-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all active">192 MHz</button>
+        </div>
+      </div>
+
+      <!-- Subcarrier Spacing -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <label class="block text-sm font-semibold text-gray-300 mb-4">Subcarrier Spacing</label>
+        <div class="flex gap-2">
+          <button onclick="setSpacing(25)"  id="sc-25"  class="sc-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all active">25 kHz</button>
+          <button onclick="setSpacing(50)"  id="sc-50"  class="sc-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all">50 kHz</button>
+        </div>
+        <p class="text-xs text-gray-600 mt-3">25 kHz spacing gives more subcarriers; 50 kHz gives fewer but more robust</p>
+      </div>
+
+      <!-- QAM Order -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-gray-300">Modulation Order (QAM)</label>
+          <span id="qam-label" class="text-neon font-display font-700 text-lg">4096</span>
+        </div>
+        <input type="range" id="qam-slider" class="w-full slider-neon" min="0" max="5" step="1" value="5"
+               oninput="updateCalc()" style="--val:100%">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>16</span><span>64</span><span>256</span><span>1024</span><span>2048</span><span>4096</span>
+        </div>
+      </div>
+
+      <!-- Coding Rate -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-gray-300">Coding Rate</label>
+          <span id="cr-label" class="text-docsis40 font-display font-700 text-lg">0.94</span>
+        </div>
+        <input type="range" id="cr-slider" class="w-full slider-40" min="50" max="97" step="1" value="94"
+               oninput="updateCalc()" style="--val:88%">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>0.50</span><span>0.75</span><span>0.94</span><span>0.97</span>
+        </div>
+      </div>
+
+      <!-- Bonded Channels -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-gray-300">Bonded Channels</label>
+          <span id="ch-label" class="text-docsis31 font-display font-700 text-lg">8</span>
+        </div>
+        <input type="range" id="ch-slider" class="w-full slider-31" min="1" max="32" step="1" value="8"
+               oninput="updateCalc()" style="--val:22%">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>1</span><span>8</span><span>16</span><span>24</span><span>32</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Results Panel -->
+    <div class="xl:col-span-3 space-y-6">
+
+      <!-- Main result -->
+      <div class="card-glow-neon rounded-2xl border border-neon/30 bg-gray-900/60 backdrop-blur p-8 text-center">
+        <div class="text-xs text-neon/70 uppercase tracking-widest font-semibold mb-3">Total Calculated Capacity</div>
+        <div id="calc-result" class="font-display text-6xl font-700 gradient-text-neon mb-2">—</div>
+        <div id="calc-unit"   class="text-2xl text-gray-400 font-display mb-6">Gbps</div>
+        <div class="grid grid-cols-3 gap-4 text-sm">
+          <div class="bg-black/30 rounded-xl p-3 border border-white/5">
+            <div class="text-gray-500 text-xs mb-1">Subcarriers</div>
+            <div id="r-subcarriers" class="font-semibold text-white text-lg">—</div>
+          </div>
+          <div class="bg-black/30 rounded-xl p-3 border border-white/5">
+            <div class="text-gray-500 text-xs mb-1">bits/symbol</div>
+            <div id="r-bits" class="font-semibold text-white text-lg">—</div>
+          </div>
+          <div class="bg-black/30 rounded-xl p-3 border border-white/5">
+            <div class="text-gray-500 text-xs mb-1">Symbol Rate</div>
+            <div id="r-symrate" class="font-semibold text-white text-lg">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formula breakdown -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <h4 class="font-display font-600 text-white mb-4 text-sm">Capacity Formula Breakdown</h4>
+        <div class="font-mono text-xs bg-black/50 rounded-xl p-4 border border-white/5 text-gray-300 leading-relaxed">
+          <div class="text-neon/70 mb-2"># OFDM Capacity per channel:</div>
+          <div>C = N_sc &times; log₂(M) &times; R_c &times; f_s</div>
+          <br>
+          <div class="text-gray-500 mb-1">Where:</div>
+          <div id="formula-Nsc"  class="text-docsis31">  N_sc  = <span>subcarriers per channel</span></div>
+          <div id="formula-M"    class="text-neon">  M     = <span>QAM order</span></div>
+          <div id="formula-Rc"   class="text-docsis40">  R_c   = <span>coding rate</span></div>
+          <div id="formula-fs"   class="text-docsis31p">  f_s   = <span>symbol rate (Hz)</span></div>
+          <br>
+          <div class="text-gray-500 mb-1">Total (bonded):</div>
+          <div id="formula-total" class="text-white">  C_total = C &times; N_channels</div>
+        </div>
+      </div>
+
+      <!-- Comparison to DOCSIS versions -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <h4 class="font-display font-600 text-white mb-4 text-sm">vs. DOCSIS Standards</h4>
+        <div class="space-y-3" id="calc-comparison"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     OFDM CHANNEL CAPACITY TABLE
+═══════════════════════════════════════════════════════════ -->
+<section id="ofdm-table" class="max-w-7xl mx-auto px-6 py-16">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl font-700 text-white mb-3">OFDM Channel Capacity Reference</h2>
+    <p class="text-gray-500 text-sm">Subcarrier count and theoretical capacity by channel width and spacing at 4096-QAM, coding rate 0.94</p>
+  </div>
+
+  <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-black/50 border-b border-white/10">
+            <th class="text-left px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Channel Width</th>
+            <th class="text-left px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Subcarrier Spacing</th>
+            <th class="text-right px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Total Subcarriers</th>
+            <th class="text-right px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Active Subcarriers</th>
+            <th class="text-right px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Symbol Rate (Msps)</th>
+            <th class="text-right px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Capacity @ 4096-QAM</th>
+            <th class="text-center px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">DOCSIS</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5" id="ofdm-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-600 mt-4 text-center">
+    Note: Active subcarriers exclude pilot tones and guard bands (~92% of total). Symbol rate = subcarrier spacing × FFT efficiency.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TECHNOLOGY COMPARISON
+═══════════════════════════════════════════════════════════ -->
+<section id="technology" class="max-w-7xl mx-auto px-6 py-16">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl font-700 text-white mb-3">Technology Architecture</h2>
+    <p class="text-gray-500 text-sm">Physical layer innovations across DOCSIS generations</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <!-- DOCSIS 3.1 -->
+    <div class="rounded-2xl border border-docsis31/20 bg-gray-900/60 backdrop-blur overflow-hidden group hover:border-docsis31/40 transition-all duration-300">
+      <div class="h-2 bg-gradient-to-r from-docsis31 to-blue-400"></div>
+      <div class="p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg bg-docsis31/15 flex items-center justify-center border border-docsis31/20">
+            <span class="font-display font-700 text-docsis31 text-sm">3.1</span>
+          </div>
+          <div>
+            <div class="font-display font-700 text-white">DOCSIS 3.1</div>
+            <div class="text-xs text-gray-500">Released 2013</div>
+          </div>
+        </div>
+
+        <div class="space-y-3 mb-6">
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">SC-QAM + OFDM Downstream</div>
+              <div class="text-xs text-gray-500">Up to 32 OFDM channels in 192 MHz blocks</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">OFDMA Upstream</div>
+              <div class="text-xs text-gray-500">Time/frequency multiplexed upstream access</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Up to 4096-QAM</div>
+              <div class="text-xs text-gray-500">12 bits per symbol, highest efficiency</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">LDPC Forward Error Correction</div>
+              <div class="text-xs text-gray-500">Low-density parity-check codes ~0.94 rate</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">5–204 MHz Upstream Band</div>
+              <div class="text-xs text-gray-500">Traditional HFC spectrum allocation</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-center">
+          <div class="bg-docsis31/10 rounded-lg p-2 border border-docsis31/15">
+            <div class="text-docsis31 font-display font-700 text-lg">10</div>
+            <div class="text-xs text-gray-500">Gbps Down</div>
+          </div>
+          <div class="bg-docsis31/10 rounded-lg p-2 border border-docsis31/15">
+            <div class="text-docsis31 font-display font-700 text-lg">2</div>
+            <div class="text-xs text-gray-500">Gbps Up</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCSIS 3.1+ -->
+    <div class="rounded-2xl border border-docsis31p/20 bg-gray-900/60 backdrop-blur overflow-hidden group hover:border-docsis31p/40 transition-all duration-300">
+      <div class="h-2 bg-gradient-to-r from-docsis31p to-purple-400"></div>
+      <div class="p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg bg-docsis31p/15 flex items-center justify-center border border-docsis31p/20">
+            <span class="font-display font-700 text-docsis31p text-sm">3.1+</span>
+          </div>
+          <div>
+            <div class="font-display font-700 text-white">DOCSIS 3.1+</div>
+            <div class="text-xs text-gray-500">Full Duplex Extension</div>
+          </div>
+        </div>
+
+        <div class="space-y-3 mb-6">
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31p mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Full Duplex OFDMA (FDX)</div>
+              <div class="text-xs text-gray-500">Simultaneous upstream &amp; downstream in same spectrum</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31p mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Echo Cancellation</div>
+              <div class="text-xs text-gray-500">Advanced DSP to eliminate self-interference</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31p mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Mid-Split / High-Split</div>
+              <div class="text-xs text-gray-500">Expands upstream to 204 MHz or higher</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31p mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">~6 Gbps Upstream Potential</div>
+              <div class="text-xs text-gray-500">With full duplex 85–204 MHz band reuse</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis31p mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Network Echo Canceller (NEC)</div>
+              <div class="text-xs text-gray-500">Required at node for interference management</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-center">
+          <div class="bg-docsis31p/10 rounded-lg p-2 border border-docsis31p/15">
+            <div class="text-docsis31p font-display font-700 text-lg">10</div>
+            <div class="text-xs text-gray-500">Gbps Down</div>
+          </div>
+          <div class="bg-docsis31p/10 rounded-lg p-2 border border-docsis31p/15">
+            <div class="text-docsis31p font-display font-700 text-lg">~6</div>
+            <div class="text-xs text-gray-500">Gbps Up</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCSIS 4.0 -->
+    <div class="rounded-2xl border border-docsis40/20 bg-gray-900/60 backdrop-blur overflow-hidden group hover:border-docsis40/40 transition-all duration-300">
+      <div class="h-2 bg-gradient-to-r from-docsis40 to-emerald-400"></div>
+      <div class="p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg bg-docsis40/15 flex items-center justify-center border border-docsis40/20">
+            <span class="font-display font-700 text-docsis40 text-sm">4.0</span>
+          </div>
+          <div>
+            <div class="font-display font-700 text-white">DOCSIS 4.0</div>
+            <div class="text-xs text-gray-500">Released 2017 (ratified 2020)</div>
+          </div>
+        </div>
+
+        <div class="space-y-3 mb-6">
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis40 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Extended Spectrum DOCSIS (ESD)</div>
+              <div class="text-xs text-gray-500">Upstream extends to 684 MHz or 1.2 GHz</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis40 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Full Duplex (FDX) Option</div>
+              <div class="text-xs text-gray-500">Simultaneous bi-directional in 108–684 MHz</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis40 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Proactive Network Management</div>
+              <div class="text-xs text-gray-500">PNM tools for real-time plant monitoring</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis40 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Multi-Gigabit Symmetric Capable</div>
+              <div class="text-xs text-gray-500">Path to 10×6 Gbps or 10×10 Gbps</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-docsis40 mt-1.5 shrink-0"></div>
+            <div>
+              <div class="text-sm font-medium text-white">Backward Compatible</div>
+              <div class="text-xs text-gray-500">Works with DOCSIS 3.0 / 3.1 modems</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-center">
+          <div class="bg-docsis40/10 rounded-lg p-2 border border-docsis40/15">
+            <div class="text-docsis40 font-display font-700 text-lg">10</div>
+            <div class="text-xs text-gray-500">Gbps Down</div>
+          </div>
+          <div class="bg-docsis40/10 rounded-lg p-2 border border-docsis40/15">
+            <div class="text-docsis40 font-display font-700 text-lg">6</div>
+            <div class="text-xs text-gray-500">Gbps Up</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Spectrum diagram -->
+  <div class="mt-10 rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-8">
+    <h3 class="font-display font-600 text-white mb-6">Spectrum Allocation Comparison</h3>
+    <div class="space-y-6">
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-docsis31">DOCSIS 3.1</span>
+          <span class="text-xs text-gray-500">5 MHz → 1218 MHz</span>
+        </div>
+        <div class="h-10 bg-gray-800 rounded-lg overflow-hidden flex">
+          <div class="h-full bg-docsis31/30 border-r border-docsis31/50 flex items-center justify-center text-xs text-docsis31 font-medium" style="width:16%">↑ US 5–85 MHz</div>
+          <div class="h-full bg-docsis31/60 flex items-center justify-center text-xs text-docsis31 font-semibold flex-1">↓ DS 85–1218 MHz</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-docsis31p">DOCSIS 3.1+ (FDX)</span>
+          <span class="text-xs text-gray-500">5 MHz → 1218 MHz</span>
+        </div>
+        <div class="h-10 bg-gray-800 rounded-lg overflow-hidden flex">
+          <div class="h-full bg-docsis31p/30 border-r border-docsis31p/50 flex items-center justify-center text-xs text-docsis31p font-medium" style="width:6%"></div>
+          <div class="h-full bg-gradient-to-r from-docsis31p/50 to-docsis31p/70 border-r border-docsis31p/60 flex items-center justify-center text-xs text-docsis31p font-semibold" style="width:17%">↕ FDX</div>
+          <div class="h-full bg-docsis31p/60 flex items-center justify-center text-xs text-docsis31p font-semibold flex-1">↓ DS 204–1218 MHz</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-docsis40">DOCSIS 4.0 (ESD)</span>
+          <span class="text-xs text-gray-500">5 MHz → 1794 MHz</span>
+        </div>
+        <div class="h-10 bg-gray-800 rounded-lg overflow-hidden flex">
+          <div class="h-full bg-docsis40/30 border-r border-docsis40/50 flex items-center justify-center text-xs text-docsis40 font-medium" style="width:5%"></div>
+          <div class="h-full bg-gradient-to-r from-docsis40/50 to-docsis40/70 border-r border-docsis40/60 flex items-center justify-center text-xs text-docsis40 font-semibold" style="width:35%">↕ ESD US 108–684 MHz</div>
+          <div class="h-full bg-docsis40/60 flex items-center justify-center text-xs text-docsis40 font-semibold flex-1">↓ DS 684–1794 MHz</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6 flex-wrap text-xs text-gray-500 pt-2 border-t border-white/5">
+        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-white/20"></div>US = Upstream</div>
+        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-white/40"></div>DS = Downstream</div>
+        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-white/60"></div>↕ = Full Duplex / ESD band</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer class="border-t border-white/5 mt-16 py-12 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+      <div>
+        <div class="font-display font-700 text-white mb-2">
+          <span class="gradient-text-neon">DOCSIS</span> Explorer
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed">
+          Interactive bandwidth and capacity reference for DOCSIS 3.1, 3.1+, and 4.0. Built for network engineers and curious minds.
+        </p>
+      </div>
+      <div>
+        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Standards</div>
+        <ul class="space-y-1.5 text-sm text-gray-500">
+          <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-docsis31 inline-block"></span>DOCSIS 3.1 — CableLabs MULPIv3.1</li>
+          <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-docsis31p inline-block"></span>DOCSIS 3.1+ — Full Duplex Addendum</li>
+          <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-docsis40 inline-block"></span>DOCSIS 4.0 — CableLabs MULPIv4.0</li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Key Parameters</div>
+        <ul class="space-y-1.5 text-sm text-gray-500">
+          <li>Max QAM: 4096 (12 bits/symbol)</li>
+          <li>LDPC Coding Rate: ~0.94</li>
+          <li>Subcarrier Spacing: 25 kHz / 50 kHz</li>
+          <li>Max Channel Width: 192 MHz</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="text-xs text-gray-600">
+        DOCSIS Explorer &mdash; Bandwidth &amp; Capacity Tool &mdash; Reference data based on CableLabs specifications
+      </div>
+      <div class="flex items-center gap-3 text-xs text-gray-600 font-mono">
+        <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5">v2025.1</span>
+        <span class="px-2 py-0.5 rounded border border-docsis40/20 bg-docsis40/5 text-docsis40">DOCSIS 4.0 Ready</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════ -->
+<script>
+/* ─── Constants ─── */
+const QAM_ORDERS  = [16, 64, 256, 1024, 2048, 4096];
+const CODING_RATE_DEFAULT = 0.94;
+
+// OFDM channel parameters: [channelWidthMHz, spacingKHz, totalSubcarriers, activeSubcarriers, symbolRateMsps, docsis]
+const OFDM_CONFIGS = [
+  { width: 24,  spacing: 25, total: 960,  active: 860,  symRate:  25e3, docsis: ['3.1','3.1+','4.0'] },
+  { width: 24,  spacing: 50, total: 480,  active: 430,  symRate:  50e3, docsis: ['3.1','3.1+','4.0'] },
+  { width: 96,  spacing: 25, total: 3840, active: 3500, symRate:  25e3, docsis: ['3.1','3.1+','4.0'] },
+  { width: 96,  spacing: 50, total: 1920, active: 1750, symRate:  50e3, docsis: ['3.1','3.1+','4.0'] },
+  { width: 192, spacing: 25, total: 7680, active: 7040, symRate:  25e3, docsis: ['3.1','3.1+','4.0'] },
+  { width: 192, spacing: 50, total: 3840, active: 3520, symRate:  50e3, docsis: ['3.1','3.1+','4.0'] },
+];
+
+/* ─── State ─── */
+let state = {
+  channelWidth: 192,
+  spacing: 25,
+  qamIdx: 5,          // 4096-QAM
+  codingRate: 0.94,
+  channels: 8,
+};
+
+/* ─────────────────────────────────────────
+   OFDM Capacity Formula
+   C = N_sc × log2(M) × R_c × f_s
+   ───────────────────────────────────────── */
+function calcCapacity(activeSc, qam, codingRate, symbolRateHz, numChannels) {
+  const bitsPerSymbol = Math.log2(qam);
+  const capacityPerChannel = activeSc * bitsPerSymbol * codingRate * symbolRateHz;
+  return capacityPerChannel * numChannels;
+}
+
+function getConfig() {
+  return OFDM_CONFIGS.find(c => c.width === state.channelWidth && c.spacing === state.spacing)
+      || OFDM_CONFIGS[4]; // default 192 MHz / 25 kHz
+}
+
+function formatBps(bps) {
+  if (bps >= 1e9)  return { val: (bps / 1e9).toFixed(2),  unit: 'Gbps' };
+  if (bps >= 1e6)  return { val: (bps / 1e6).toFixed(1),  unit: 'Mbps' };
+  return              { val: (bps / 1e3).toFixed(0),  unit: 'kbps' };
+}
+
+/* ─── Button helpers ─── */
+function setChannelWidth(w) {
+  state.channelWidth = w;
+  document.querySelectorAll('.cw-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('cw-' + w).classList.add('active');
+  updateCalc();
+}
+function setSpacing(s) {
+  state.spacing = s;
+  document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sc-' + s).classList.add('active');
+  updateCalc();
+}
+
+/* ─── Button styles ─── */
+const styleSheet = document.styleSheets[0];
+
+function applyBtnStyles() {
+  document.querySelectorAll('.cw-btn, .sc-btn').forEach(btn => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
+      btn.classList.add('border-neon/50','text-neon','bg-neon/10');
+    } else {
+      btn.classList.remove('border-neon/50','text-neon','bg-neon/10');
+      btn.classList.add('border-white/10','text-gray-400','bg-transparent');
+    }
+  });
+}
+
+/* ─── Update slider fill ─── */
+function updateSliderFill(el) {
+  const min = parseFloat(el.min);
+  const max = parseFloat(el.max);
+  const val = parseFloat(el.value);
+  const pct = ((val - min) / (max - min) * 100).toFixed(1) + '%';
+  el.style.setProperty('--val', pct);
+}
+
+/* ─── Main calculator update ─── */
+function updateCalc() {
+  const qamSlider = document.getElementById('qam-slider');
+  const crSlider  = document.getElementById('cr-slider');
+  const chSlider  = document.getElementById('ch-slider');
+
+  state.qamIdx      = parseInt(qamSlider.value);
+  state.codingRate  = parseInt(crSlider.value) / 100;
+  state.channels    = parseInt(chSlider.value);
+
+  const qam = QAM_ORDERS[state.qamIdx];
+
+  // Update labels
+  document.getElementById('qam-label').textContent = qam.toLocaleString();
+  document.getElementById('cr-label').textContent  = state.codingRate.toFixed(2);
+  document.getElementById('ch-label').textContent  = state.channels;
+
+  // Update slider fills
+  [qamSlider, crSlider, chSlider].forEach(updateSliderFill);
+
+  const cfg = getConfig();
+  const bitsPerSym = Math.log2(qam);
+  const symbolRateHz = cfg.spacing * 1000; // spacing in kHz → Hz
+  const totalBps = calcCapacity(cfg.active, qam, state.codingRate, symbolRateHz, state.channels);
+
+  const fmt = formatBps(totalBps);
+  document.getElementById('calc-result').textContent = fmt.val;
+  document.getElementById('calc-unit').textContent   = fmt.unit;
+
+  document.getElementById('r-subcarriers').textContent = (cfg.active * state.channels).toLocaleString();
+  document.getElementById('r-bits').textContent        = bitsPerSym.toFixed(0);
+  document.getElementById('r-symrate').textContent     = (symbolRateHz / 1e6).toFixed(3) + ' Msps';
+
+  // Update formula panel
+  document.getElementById('formula-Nsc').innerHTML  =
+    `  N_sc  = <span>${cfg.active.toLocaleString()} active × ${state.channels} ch = ${(cfg.active * state.channels).toLocaleString()}</span>`;
+  document.getElementById('formula-M').innerHTML    =
+    `  M     = <span>${qam.toLocaleString()}-QAM → ${bitsPerSym} bits/sym</span>`;
+  document.getElementById('formula-Rc').innerHTML   =
+    `  R_c   = <span>${state.codingRate.toFixed(2)} (LDPC coding rate)</span>`;
+  document.getElementById('formula-fs').innerHTML   =
+    `  f_s   = <span>${(symbolRateHz/1e3).toFixed(0)} kHz subcarrier spacing</span>`;
+  document.getElementById('formula-total').innerHTML =
+    `  C_total = ${fmt.val} ${fmt.unit} (${state.channels} bonded channels)`;
+
+  // Comparison bars
+  const standards = [
+    { name: 'DOCSIS 3.1',  down: 10e9,  color: '#3b82f6', cls: 'bg-docsis31'  },
+    { name: 'DOCSIS 3.1+', down: 10e9,  color: '#a855f7', cls: 'bg-docsis31p' },
+    { name: 'DOCSIS 4.0',  down: 10e9,  color: '#10b981', cls: 'bg-docsis40'  },
+  ];
+  const maxBps = Math.max(totalBps, 10e9);
+  const compContainer = document.getElementById('calc-comparison');
+  compContainer.innerHTML = standards.map(s => {
+    const pctStd  = (s.down / maxBps * 100).toFixed(1);
+    const pctCalc = (totalBps / maxBps * 100).toFixed(1);
+    const fmtStd  = formatBps(s.down);
+    return `
+      <div class="text-xs text-gray-500 mb-1 font-semibold">${s.name} Downstream</div>
+      <div class="flex items-center gap-3 mb-3">
+        <div class="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
+          <div class="h-full rounded-full bar-animate" style="width:${pctStd}%; background:${s.color}40; border: 1px solid ${s.color}80;"></div>
+        </div>
+        <span class="text-white font-semibold text-sm w-16 text-right">${fmtStd.val} ${fmtStd.unit}</span>
+      </div>
+      <div class="text-xs text-gray-500 mb-1">Your Config</div>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
+          <div class="h-full bg-neon/60 rounded-full bar-animate" style="width:${Math.min(pctCalc,100)}%;"></div>
+        </div>
+        <span class="text-neon font-semibold text-sm w-16 text-right">${fmt.val} ${fmt.unit}</span>
+      </div>`;
+  }).join('');
+
+  applyBtnStyles();
+}
+
+/* ─── OFDM Table ─── */
+function buildOFDMTable() {
+  const tbody = document.getElementById('ofdm-table-body');
+  const qam   = 4096;
+  const rc    = 0.94;
+
+  const rows = OFDM_CONFIGS.map(cfg => {
+    const bps    = calcCapacity(cfg.active, qam, rc, cfg.spacing * 1000, 1);
+    const fmt    = formatBps(bps);
+    const docsis = cfg.docsis.join(', ');
+    const rowCls = cfg.width === 192
+      ? 'bg-neon/3 hover:bg-neon/5'
+      : 'hover:bg-white/3';
+
+    const widthColor = cfg.width === 192 ? 'text-neon' : cfg.width === 96 ? 'text-docsis31p' : 'text-docsis31';
+    return `<tr class="${rowCls} transition-colors">
+      <td class="px-6 py-4 font-semibold ${widthColor}">${cfg.width} MHz</td>
+      <td class="px-6 py-4 text-gray-300">${cfg.spacing} kHz</td>
+      <td class="px-6 py-4 text-right text-gray-300">${cfg.total.toLocaleString()}</td>
+      <td class="px-6 py-4 text-right text-white font-medium">${cfg.active.toLocaleString()}</td>
+      <td class="px-6 py-4 text-right text-gray-400">${(cfg.spacing / 1000).toFixed(3)}</td>
+      <td class="px-6 py-4 text-right">
+        <span class="font-display font-700 ${widthColor}">${fmt.val}</span>
+        <span class="text-gray-500 text-xs ml-1">${fmt.unit}</span>
+      </td>
+      <td class="px-6 py-4 text-center">
+        <div class="flex gap-1 justify-center flex-wrap">${cfg.docsis.map(d => {
+          const cls = d === '4.0' ? 'bg-docsis40/20 text-docsis40 border-docsis40/30'
+                    : d === '3.1+' ? 'bg-docsis31p/20 text-docsis31p border-docsis31p/30'
+                    : 'bg-docsis31/20 text-docsis31 border-docsis31/30';
+          return `<span class="badge ${cls} border">${d}</span>`;
+        }).join('')}</div>
+      </td>
+    </tr>`;
+  });
+  tbody.innerHTML = rows.join('');
+}
+
+/* ─── Speed bars ─── */
+function buildSpeedBars() {
+  const container = document.getElementById('speedBars');
+  const data = [
+    { label: 'DOCSIS 3.1  Downstream',  val: 10,   max: 10, color: '#3b82f6', bgColor: 'rgba(59,130,246,0.15)'  },
+    { label: 'DOCSIS 3.1  Upstream',    val: 1.5,  max: 10, color: '#3b82f6', bgColor: 'rgba(59,130,246,0.08)'  },
+    { label: 'DOCSIS 3.1+ Downstream',  val: 10,   max: 10, color: '#a855f7', bgColor: 'rgba(168,85,247,0.15)'  },
+    { label: 'DOCSIS 3.1+ Upstream',    val: 6,    max: 10, color: '#a855f7', bgColor: 'rgba(168,85,247,0.08)'  },
+    { label: 'DOCSIS 4.0  Downstream',  val: 10,   max: 10, color: '#10b981', bgColor: 'rgba(16,185,129,0.15)'  },
+    { label: 'DOCSIS 4.0  Upstream',    val: 6,    max: 10, color: '#10b981', bgColor: 'rgba(16,185,129,0.08)'  },
+  ];
+  container.innerHTML = data.map(d => {
+    const pct = (d.val / d.max * 100).toFixed(0);
+    return `
+      <div class="flex items-center gap-4">
+        <div class="w-44 shrink-0 text-xs text-gray-400 font-medium font-mono">${d.label}</div>
+        <div class="flex-1 h-6 rounded-lg overflow-hidden" style="background:${d.bgColor};">
+          <div class="h-full rounded-lg flex items-center pl-3 text-xs font-semibold bar-animate"
+               style="width:${pct}%; background: linear-gradient(90deg, ${d.color}99, ${d.color}cc); color:white; min-width:3rem;">
+            ${d.val} Gbps
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ─── Chart.js ─── */
+function buildCharts() {
+  const chartDefaults = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#9ca3af', font: { family: 'Inter', size: 11 } } } },
+  };
+
+  // Bar chart
+  new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+      labels: ['DOCSIS 3.1', 'DOCSIS 3.1+', 'DOCSIS 4.0'],
+      datasets: [
+        {
+          label: 'Downstream (Gbps)',
+          data: [10, 10, 10],
+          backgroundColor: ['rgba(59,130,246,0.7)', 'rgba(168,85,247,0.7)', 'rgba(16,185,129,0.7)'],
+          borderColor:      ['#3b82f6', '#a855f7', '#10b981'],
+          borderWidth: 1.5,
+          borderRadius: 6,
+        },
+        {
+          label: 'Upstream (Gbps)',
+          data: [1.5, 6, 6],
+          backgroundColor: ['rgba(59,130,246,0.25)', 'rgba(168,85,247,0.25)', 'rgba(16,185,129,0.25)'],
+          borderColor:      ['#3b82f6', '#a855f7', '#10b981'],
+          borderWidth: 1.5,
+          borderRadius: 6,
+          borderDash: [4,4],
+        },
+      ],
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: { ticks: { color: '#6b7280', font: { family: 'Inter' } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        y: { ticks: { color: '#6b7280', font: { family: 'Inter' } }, grid: { color: 'rgba(255,255,255,0.05)' },
+             title: { display: true, text: 'Gbps', color: '#4b5563', font: { family: 'Inter', size: 11 } } },
+      },
+    },
+  });
+
+  // Radar chart
+  new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
+    data: {
+      labels: ['Downstream', 'Upstream', 'Modulation', 'Spectrum Width', 'Duplex Flex', 'Future-Proof'],
+      datasets: [
+        {
+          label: 'DOCSIS 3.1',
+          data: [10, 2, 10, 5, 3, 5],
+          fill: true,
+          backgroundColor: 'rgba(59,130,246,0.15)',
+          borderColor: '#3b82f6',
+          pointBackgroundColor: '#3b82f6',
+          pointRadius: 4,
+          borderWidth: 2,
+        },
+        {
+          label: 'DOCSIS 3.1+',
+          data: [10, 7, 10, 7, 8, 7],
+          fill: true,
+          backgroundColor: 'rgba(168,85,247,0.12)',
+          borderColor: '#a855f7',
+          pointBackgroundColor: '#a855f7',
+          pointRadius: 4,
+          borderWidth: 2,
+        },
+        {
+          label: 'DOCSIS 4.0',
+          data: [10, 9, 10, 10, 9, 10],
+          fill: true,
+          backgroundColor: 'rgba(16,185,129,0.12)',
+          borderColor: '#10b981',
+          pointBackgroundColor: '#10b981',
+          pointRadius: 4,
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: { display: false },
+          grid:  { color: 'rgba(255,255,255,0.08)' },
+          angleLines: { color: 'rgba(255,255,255,0.08)' },
+          pointLabels: { color: '#6b7280', font: { family: 'Inter', size: 10 } },
+        },
+      },
+    },
+  });
+}
+
+/* ─── Init ─── */
+document.addEventListener('DOMContentLoaded', () => {
+  buildCharts();
+  buildOFDMTable();
+  buildSpeedBars();
+  updateCalc();
+  applyBtnStyles();
+
+  // Trigger animations on scroll (simple IntersectionObserver)
+  const bars = document.querySelectorAll('.bar-animate');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.style.opacity = '1'; });
+  }, { threshold: 0.1 });
+  bars.forEach(b => observer.observe(b));
+});
+</script>
+
+</body>
 </html>
