@@ -42,8 +42,15 @@ def calculate_data_rate(actual_symbol_period_usec, effective_subcarriers, avg_mo
 
     return total_data_bits, rate_across_whole_channel_gbps, phy_efficiency
 
+DOCSIS_DS_MAX_MODULATION = {
+    '3.1':  12,   # 4096-QAM mandatory max; 8192/16384-QAM optional per spec
+    '3.1+': 14,   # uses optional 8192/16384-QAM modes from the D3.1 spec
+    '4.0':  14,   # 16384-QAM mandatory
+}
+
 def main():
     # User Definable Vars
+    docsis_version = '3.1'  # Options: '3.1', '3.1+', '4.0'
     occupied_spectrum = 192  # MHz
     lower_band_edge = 678   # MHz
     avg_modulation_order = 12
@@ -65,6 +72,13 @@ def main():
     actual_symbol_period_usec, effective_subcarriers = calculate_parameters(occupied_spectrum, lower_band_edge, avg_modulation_order, guard_band, excluded_band, subcarrier_spacing)
     total_data_bits, rate_across_whole_channel_gbps, phy_efficiency = calculate_data_rate(actual_symbol_period_usec, effective_subcarriers, avg_modulation_order, occupied_spectrum)
 
+    max_ds_mod = DOCSIS_DS_MAX_MODULATION.get(docsis_version, 12)
+    if avg_modulation_order > max_ds_mod:
+        print(f"WARNING: Modulation order {avg_modulation_order} exceeds DOCSIS {docsis_version} DS mandatory limit of {max_ds_mod}")
+    elif docsis_version == '3.1' and avg_modulation_order > 12:
+        print(f"NOTE: Modulation order {avg_modulation_order} is optional (not mandatory) in DOCSIS {docsis_version}")
+
+    print(f"DOCSIS Version: {docsis_version}")
     print(f"Total Data Bits: {total_data_bits}")
     print(f"Rate across Whole Channel [Gbps]: {rate_across_whole_channel_gbps}")
     print(f"Downstream PHY Efficiency: {phy_efficiency}")

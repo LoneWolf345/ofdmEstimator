@@ -20,11 +20,17 @@ def minislot_capacity(K, modulation_order, pattern_index):
     ms_capacity = modulation_order * subcarriers + cp_modulation_order * minislot_patterns[pattern_index][4]
     return ms_capacity
 
+DOCSIS_US_MAX_MODULATION = {
+    '3.1':  10,   # 1024-QAM mandatory max; 2048/4096-QAM optional per spec
+    '3.1+': 12,   # uses optional 4096-QAM mode from the D3.1 spec
+    '4.0':  12,   # 4096-QAM mandatory
+}
+
 def calculate_upstream_ofdma_capacity(
     start_frequency, end_frequency, modulation_order, us_sampling_rate, us_subcarrier_spacing,
     us_pilot_pattern, us_cyclic_prefix, us_minislot_symbols_k, us_num_cont_legacy,
     us_excluded_spectrum, us_guard_band, us_excluded_nbi, us_addnl_edge_minislot,
-    us_num_grants_in_profile
+    us_num_grants_in_profile, docsis_version='3.1'
 ):
     """
     Calculates the upstream OFDMA channel capacity based on the given parameters.
@@ -71,6 +77,12 @@ def calculate_upstream_ofdma_capacity(
     us_phy_efficiency = profile_rate_mbps / us_active_bw
     us_phy_efficiency_w_fec_time_overhead = us_phy_efficiency * get_cw_sizes_for_efficiency(us_capacity)[0]
 
+    max_us_mod = DOCSIS_US_MAX_MODULATION.get(docsis_version, 10)
+    if modulation_order > max_us_mod:
+        print(f"WARNING: US modulation order {modulation_order} exceeds DOCSIS {docsis_version} US mandatory limit of {max_us_mod}")
+    elif docsis_version == '3.1' and modulation_order > 10:
+        print(f"NOTE: US modulation order {modulation_order} is optional (not mandatory) in DOCSIS {docsis_version}")
+
     return us_phy_efficiency_w_fec_time_overhead, profile_rate_mbps
 
 # NOTE: The get_cw_sizes_for_efficiency function is not provided in the document,
@@ -83,6 +95,7 @@ def get_cw_sizes_for_efficiency(us_capacity):
     return 1.0, 1.0  # Placeholder return values
 
 # User input
+docsis_version = input("Enter the DOCSIS version (3.1, 3.1+, or 4.0): ").strip() or '3.1'
 start_frequency = float(input("Enter the start frequency (MHz): "))
 end_frequency = float(input("Enter the end frequency (MHz): "))
 modulation_order = int(input("Enter the modulation order (2-12): "))
@@ -92,8 +105,10 @@ result = calculate_upstream_ofdma_capacity(
     start_frequency=start_frequency, end_frequency=end_frequency, modulation_order=modulation_order,
     us_sampling_rate=102.4, us_subcarrier_spacing=25, us_pilot_pattern=8, us_cyclic_prefix=192,
     us_minislot_symbols_k=36, us_num_cont_legacy=1, us_excluded_spectrum=0, us_guard_band=1,
-    us_excluded_nbi=0, us_addnl_edge_minislot=0, us_num_grants_in_profile=38
+    us_excluded_nbi=0, us_addnl_edge_minislot=0, us_num_grants_in_profile=38,
+    docsis_version=docsis_version
 )
 
+print(f"DOCSIS Version: {docsis_version}")
 print(f"Upstream PHY Efficiency (with FEC time overhead): {result[0]:.6f}")
 print(f"Upstream Channel Capacity (Mbps): {result[1]:.6f}")

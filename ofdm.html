@@ -293,6 +293,14 @@ td {
     <table>
         <tbody>
             <tr>
+                <th>DOCSIS Version</th>
+                <td><select id="docsisVersion" onchange="updateForVersion()">
+                    <option value="3.1">DOCSIS 3.1 (max 4096-QAM mandatory)</option>
+                    <option value="3.1+">DOCSIS 3.1+ (8192/16384-QAM optional)</option>
+                    <option value="4.0">DOCSIS 4.0 (max 16384-QAM mandatory)</option>
+                </select></td>
+            </tr>
+            <tr>
                 <th>Occupied Spectrum (MHz)</th>
                 <td><input type="number" id="occupiedSpectrum" min="6.4" max="192" value="192"/></td>
             </tr>
@@ -314,19 +322,7 @@ td {
             </tr>
             <tr>
                 <th>Average OFDM Modulation</th>
-                <td><select id="averageModulation">
-                    <option value="4,6,7,8,9,10,11,12,13,14">Any</option>
-                    <option value="14">16384Qam</option>
-                    <option value="13">8192qam</option>
-                    <option value="12">4096qam</option>
-                    <option value="11">2048qam</option>
-                    <option value="10">1024qam</option>
-                    <option value="9">512qam</option>
-                    <option value="8">256qam</option>
-                    <option value="7">128qam</option>
-                    <option value="6">64qam</option>
-                    <option value="4">16qam</option>
-                </select></td>
+                <td><select id="averageModulation"><!-- populated by updateForVersion() --></select></td>
             </tr>
             <tr>
                 <th>Cyclic Prefix</th>
@@ -508,6 +504,69 @@ td {
         /*
         Constants DownstreamChannel
         */
+        // DOCSIS version-specific modulation options
+        // D3.1: 4096-QAM (12 bit) mandatory max; 8192/16384 optional per spec
+        // D3.1+: uses the optional 8192/16384-QAM modes from the D3.1 spec
+        // D4.0: 16384-QAM (14 bit) mandatory
+        const docsisModulationOptions = {
+            '3.1': {
+                anyValue: '4,6,7,8,9,10,11,12',
+                anyLabel: 'Any (up to 4096-QAM)',
+                options: [
+                    {value: '12', label: '4096-QAM (12 bit)'},
+                    {value: '11', label: '2048-QAM (11 bit)'},
+                    {value: '10', label: '1024-QAM (10 bit)'},
+                    {value: '9',  label: '512-QAM (9 bit)'},
+                    {value: '8',  label: '256-QAM (8 bit)'},
+                    {value: '7',  label: '128-QAM (7 bit)'},
+                    {value: '6',  label: '64-QAM (6 bit)'},
+                    {value: '4',  label: '16-QAM (4 bit)'},
+                ]
+            },
+            '3.1+': {
+                anyValue: '4,6,7,8,9,10,11,12,13,14',
+                anyLabel: 'Any (up to 16384-QAM)',
+                options: [
+                    {value: '14', label: '16384-QAM (14 bit) [optional in D3.1]'},
+                    {value: '13', label: '8192-QAM (13 bit) [optional in D3.1]'},
+                    {value: '12', label: '4096-QAM (12 bit)'},
+                    {value: '11', label: '2048-QAM (11 bit)'},
+                    {value: '10', label: '1024-QAM (10 bit)'},
+                    {value: '9',  label: '512-QAM (9 bit)'},
+                    {value: '8',  label: '256-QAM (8 bit)'},
+                    {value: '7',  label: '128-QAM (7 bit)'},
+                    {value: '6',  label: '64-QAM (6 bit)'},
+                    {value: '4',  label: '16-QAM (4 bit)'},
+                ]
+            },
+            '4.0': {
+                anyValue: '4,6,7,8,9,10,11,12,13,14',
+                anyLabel: 'Any (up to 16384-QAM)',
+                options: [
+                    {value: '14', label: '16384-QAM (14 bit)'},
+                    {value: '13', label: '8192-QAM (13 bit)'},
+                    {value: '12', label: '4096-QAM (12 bit)'},
+                    {value: '11', label: '2048-QAM (11 bit)'},
+                    {value: '10', label: '1024-QAM (10 bit)'},
+                    {value: '9',  label: '512-QAM (9 bit)'},
+                    {value: '8',  label: '256-QAM (8 bit)'},
+                    {value: '7',  label: '128-QAM (7 bit)'},
+                    {value: '6',  label: '64-QAM (6 bit)'},
+                    {value: '4',  label: '16-QAM (4 bit)'},
+                ]
+            }
+        };
+
+        function updateForVersion() {
+            const version = document.getElementById('docsisVersion').value;
+            const modSelect = document.getElementById('averageModulation');
+            const config = docsisModulationOptions[version];
+            modSelect.innerHTML = '';
+            modSelect.add(new Option(config.anyLabel, config.anyValue));
+            config.options.forEach(o => modSelect.add(new Option(o.label, o.value)));
+            calc();
+        }
+
         let bandwidthModulationLookup = {
             "zero": 1,
             "qpsk": 2,
@@ -659,7 +718,7 @@ td {
                 });
             });
         }
-        calc();
+        updateForVersion();
     </script>
 </body>
 
