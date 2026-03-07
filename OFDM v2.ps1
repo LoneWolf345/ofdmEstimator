@@ -113,7 +113,7 @@ $script:numFftBlocks = 1
 $script:pilotDensityM = 48
 $script:excludedSubcarriers = 20
 $script:ncpModulationOrder = 6
-$script:numSymbolsPerProfile = 1
+$script:numSymbolsPerProfile = [int](1000 * $script:subcarrierSpacing)  # ~1 second of symbols for accurate codeword packing
 $script:ldpcFecCw = @(16200, 14216, 1800, 168, 16)  # [CWSize, Infobits, Parity, BCH, CWheader]
 
 $occupiedSpectrum = [double](Read-Host "Please enter the occupied spectrum in MHz (e.g., 96)")

@@ -59,7 +59,7 @@ def main():
     pilot_density_m = 48
     excluded_subcarriers = 20
     ncp_modulation_order = 6
-    num_symbols_per_profile = 1
+    num_symbols_per_profile = int(1000 * subcarrier_spacing)  # ~1 second of symbols for accurate codeword packing
     ldpc_fec_cw = [16200, 14216, 1800, 168, 16]  # [CWSize, Infobits, Parity, BCH, CWheader]
 
     actual_symbol_period_usec, effective_subcarriers = calculate_parameters(occupied_spectrum, lower_band_edge, avg_modulation_order, guard_band, excluded_band, subcarrier_spacing)
