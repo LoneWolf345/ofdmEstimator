@@ -560,7 +560,7 @@ td {
             const DSCyclicPrefix_usec = DSCyclicPrefix / DSSamplingRate
             const DSActualSymbolPeriod_usec = DSSymbolPeriod_usec + DSCyclicPrefix_usec
             const DSSymbolEfficiency = 100 * DSSymbolPeriod_usec / DSActualSymbolPeriod_usec
-            const DSModulatedSubcarriers = (DSOccupiedSpectrum - DSGuardBand - DSExcludedBand) * 1000 / DSSubcarrierSpacing
+            const DSModulatedSubcarriers = (DSOccupiedSpectrum - DSGuardBand) * 1000 / DSSubcarrierSpacing
             let DSNumPLCSubcarriers
             if (DSSubcarrierSpacing == 50)
                 DSNumPLCSubcarriers = 8

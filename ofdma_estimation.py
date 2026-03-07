@@ -69,7 +69,7 @@ def calculate_upstream_ofdma_capacity(
 
     profile_rate_mbps = (us_capacity / (us_minislot_symbols_k * us_actual_symbol_period_usec))
     us_phy_efficiency = profile_rate_mbps / us_active_bw
-    us_phy_efficiency_w_fec_time_overhead = us_phy_efficiency * get_cw_sizes_for_efficiency(us_capacity)[0] * (us_symbol_efficiency / 100)
+    us_phy_efficiency_w_fec_time_overhead = us_phy_efficiency * get_cw_sizes_for_efficiency(us_capacity)[0]
 
     return us_phy_efficiency_w_fec_time_overhead, profile_rate_mbps
 
