@@ -61,6 +61,7 @@ tailwind = { config: { theme: { extend: {
       <a href="#metrics"    class="hover:text-white transition-colors">Metrics</a>
       <a href="#calculator" class="hover:text-white transition-colors">Calculator</a>
       <a href="#charts"     class="hover:text-white transition-colors">Charts</a>
+      <a href="#upstream-calc" class="hover:text-white transition-colors">Upstream</a>
       <a href="#ofdm-table" class="hover:text-white transition-colors">OFDM Table</a>
       <a href="#technology" class="hover:text-white transition-colors">Technology</a>
     </div>
@@ -356,28 +357,80 @@ tailwind = { config: { theme: { extend: {
         <p class="text-xs text-gray-600 mt-1">DOCSIS 3.1 spec: max 2 downstream OFDM channels per node. D3.0: SC-QAM only (0 OFDM).</p>
       </div>
 
+      <!-- DS SC-QAM Channels -->
+      <div class="rounded-2xl border border-docsis31/20 bg-gray-900/60 backdrop-blur p-6">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-gray-300">DS SC-QAM Channels</label>
+          <span id="scqam-label" class="text-docsis31 font-display font-700 text-lg">16</span>
+        </div>
+        <input type="range" id="scqam-slider" class="w-full slider-31" min="0" max="32" step="1" value="16"
+               oninput="updateCalc()" style="--val:50%">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>0</span><span>8</span><span>16</span><span>24</span><span>32</span>
+        </div>
+        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
+          <div class="flex items-center justify-center text-gray-400 border-r border-black/20" style="width:12%;background:rgba(107,114,128,0.12)">D3.0</div>
+          <div class="flex items-center justify-center text-docsis31" style="width:88%;background:rgba(59,130,246,0.12)">D3.1 / D4.0 · up to 32 SC-QAM channels (6 MHz each)</div>
+        </div>
+        <div class="flex gap-2 mt-3">
+          <button onclick="setSCQAMQam(64)"  id="scq-64"  class="scq-btn px-3 py-1 rounded-lg text-xs font-semibold border transition-all">64-QAM</button>
+          <button onclick="setSCQAMQam(256)" id="scq-256" class="scq-btn px-3 py-1 rounded-lg text-xs font-semibold border transition-all">256-QAM</button>
+        </div>
+        <p class="text-xs text-gray-600 mt-2">6 MHz each · 5.057 Msps · shares DS band with OFDM · max 256-QAM</p>
+      </div>
+
     </div>
 
     <!-- Results Panel -->
     <div class="xl:col-span-3 space-y-6">
 
       <!-- Main result -->
-      <div class="card-glow-neon rounded-2xl border border-neon/30 bg-gray-900/60 backdrop-blur p-8 text-center">
-        <div class="text-xs text-neon/70 uppercase tracking-widest font-semibold mb-3">Total Calculated Capacity</div>
-        <div id="calc-result" class="font-display text-6xl font-700 gradient-text-neon mb-2">—</div>
-        <div id="calc-unit"   class="text-2xl text-gray-400 font-display mb-6">Gbps</div>
-        <div class="grid grid-cols-3 gap-4 text-sm">
+      <div class="card-glow-neon rounded-2xl border border-neon/30 bg-gray-900/60 backdrop-blur p-8">
+        <div class="text-xs text-neon/70 uppercase tracking-widest font-semibold mb-3 text-center">Total Downstream Capacity</div>
+        <div class="text-center">
+          <div id="calc-result" class="font-display text-6xl font-700 gradient-text-neon mb-2">—</div>
+          <div id="calc-unit"   class="text-2xl text-gray-400 font-display mb-5">Gbps</div>
+        </div>
+        <!-- OFDM + SC-QAM breakdown -->
+        <div class="grid grid-cols-2 gap-4 mb-5">
+          <div class="bg-black/30 rounded-xl p-3 border border-neon/15 text-center">
+            <div class="text-gray-500 text-xs mb-1">OFDM</div>
+            <div id="r-ofdm" class="font-semibold text-neon text-base">—</div>
+          </div>
+          <div class="bg-black/30 rounded-xl p-3 border border-docsis31/15 text-center">
+            <div class="text-gray-500 text-xs mb-1">SC-QAM</div>
+            <div id="r-scqam" class="font-semibold text-docsis31 text-base">—</div>
+          </div>
+        </div>
+        <!-- DS Spectrum utilization bar -->
+        <div class="mb-5">
+          <div class="flex justify-between text-xs text-gray-500 mb-1">
+            <span>DS Spectrum (1133 MHz: 85–1218 MHz)</span>
+            <span id="r-spec-pct" class="text-gray-400">—</span>
+          </div>
+          <div class="h-5 bg-gray-800 rounded-full overflow-hidden flex">
+            <div id="r-spec-ofdm"  class="h-full bar-animate" style="width:0%;background:rgba(0,212,255,0.55)"></div>
+            <div id="r-spec-scqam" class="h-full bar-animate" style="width:0%;background:rgba(59,130,246,0.45)"></div>
+          </div>
+          <div class="flex text-xs text-gray-600 mt-1 gap-3">
+            <span><span style="color:rgba(0,212,255,0.8)">■</span> OFDM <span id="r-spec-ofdm-mhz"></span></span>
+            <span><span style="color:rgba(59,130,246,0.8)">■</span> SC-QAM <span id="r-spec-scqam-mhz"></span></span>
+            <span class="ml-auto text-gray-700">Available</span>
+          </div>
+        </div>
+        <!-- OFDM sub-metrics -->
+        <div class="grid grid-cols-3 gap-3">
           <div class="bg-black/30 rounded-xl p-3 border border-white/5">
             <div class="text-gray-500 text-xs mb-1">Subcarriers</div>
-            <div id="r-subcarriers" class="font-semibold text-white text-lg">—</div>
+            <div id="r-subcarriers" class="font-semibold text-white text-sm">—</div>
           </div>
           <div class="bg-black/30 rounded-xl p-3 border border-white/5">
-            <div class="text-gray-500 text-xs mb-1">bits/symbol</div>
-            <div id="r-bits" class="font-semibold text-white text-lg">—</div>
+            <div class="text-gray-500 text-xs mb-1">bits/sym (OFDM)</div>
+            <div id="r-bits" class="font-semibold text-white text-sm">—</div>
           </div>
           <div class="bg-black/30 rounded-xl p-3 border border-white/5">
             <div class="text-gray-500 text-xs mb-1">Symbol Rate</div>
-            <div id="r-symrate" class="font-semibold text-white text-lg">—</div>
+            <div id="r-symrate" class="font-semibold text-white text-sm">—</div>
           </div>
         </div>
       </div>
@@ -410,6 +463,129 @@ tailwind = { config: { theme: { extend: {
       <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
         <h4 class="font-display font-600 text-white mb-4 text-sm">vs. DOCSIS Standards</h4>
         <div class="space-y-3" id="calc-comparison"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     UPSTREAM CALCULATOR
+═══════════════════════════════════════════════════════════ -->
+<section id="upstream-calc" class="max-w-7xl mx-auto px-6 pb-16">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl font-700 text-white mb-3">Upstream Configuration</h2>
+    <p class="text-gray-500 text-sm">Mix A-TDMA (legacy SC-QAM) and OFDMA upstream channels — trade spectrum for capacity</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-5 gap-8">
+
+    <!-- Upstream Controls -->
+    <div class="xl:col-span-2 space-y-6">
+
+      <!-- ATDMA Channels -->
+      <div class="rounded-2xl border border-docsis31/20 bg-gray-900/60 backdrop-blur p-6">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-gray-300">A-TDMA Channels</label>
+          <span id="atdma-label" class="text-docsis31 font-display font-700 text-lg">8</span>
+        </div>
+        <input type="range" id="atdma-slider" class="w-full slider-31" min="0" max="24" step="1" value="8"
+               oninput="updateUpstream()" style="--val:33%">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>0</span><span>6</span><span>12</span><span>18</span><span>24</span>
+        </div>
+        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
+          <div class="flex items-center justify-center text-docsis31 border-r border-black/20" style="width:67%;background:rgba(59,130,246,0.15)">D3.0 / D3.1 · up to 16 channels</div>
+          <div class="flex items-center justify-center text-docsis40" style="width:33%;background:rgba(16,185,129,0.10)">D4.0 · 17–24</div>
+        </div>
+        <div class="flex gap-2 mt-3">
+          <button onclick="setATDMAQam(16)"  id="atdma-16"  class="atdma-btn px-3 py-1 rounded-lg text-xs font-semibold border transition-all">16-QAM</button>
+          <button onclick="setATDMAQam(64)"  id="atdma-64"  class="atdma-btn px-3 py-1 rounded-lg text-xs font-semibold border transition-all">64-QAM</button>
+          <button onclick="setATDMAQam(256)" id="atdma-256" class="atdma-btn px-3 py-1 rounded-lg text-xs font-semibold border transition-all">256-QAM</button>
+        </div>
+        <p class="text-xs text-gray-600 mt-2">6.4 MHz each · 5.12 Msps · legacy DOCSIS upstream SC-QAM</p>
+      </div>
+
+      <!-- OFDMA Channels -->
+      <div class="rounded-2xl border border-docsis31p/20 bg-gray-900/60 backdrop-blur p-6">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-gray-300">OFDMA Channels</label>
+          <span id="ofdma-label" class="text-docsis31p font-display font-700 text-lg">1</span>
+        </div>
+        <input type="range" id="ofdma-slider" class="w-full slider-31p" min="0" max="4" step="1" value="1"
+               oninput="updateUpstream()" style="--val:25%">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+        </div>
+        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
+          <div class="flex items-center justify-center text-gray-400 border-r border-black/20" style="width:25%;background:rgba(107,114,128,0.10)">D3.0: 0</div>
+          <div class="flex items-center justify-center text-docsis31p border-r border-black/20" style="width:50%;background:rgba(168,85,247,0.15)">D3.1+: 1–2</div>
+          <div class="flex items-center justify-center text-docsis40" style="width:25%;background:rgba(16,185,129,0.12)">D4.0: 3–4</div>
+        </div>
+        <div class="flex gap-2 mt-3">
+          <button onclick="setOFDMAWidth(24)" id="ofdma-24" class="ofdma-btn px-3 py-1 rounded-lg text-xs font-semibold border transition-all">24 MHz</button>
+          <button onclick="setOFDMAWidth(96)" id="ofdma-96" class="ofdma-btn px-3 py-1 rounded-lg text-xs font-semibold border transition-all">96 MHz</button>
+        </div>
+        <p class="text-xs text-gray-600 mt-2">Uses same QAM &amp; coding rate as DS config above · D3.1+ upstream</p>
+      </div>
+
+    </div>
+
+    <!-- Upstream Results -->
+    <div class="xl:col-span-3 space-y-6">
+
+      <!-- Upstream total -->
+      <div class="card-glow-31p rounded-2xl border border-docsis31p/30 bg-gray-900/60 backdrop-blur p-8">
+        <div class="text-xs text-docsis31p/70 uppercase tracking-widest font-semibold mb-3 text-center">Total Upstream Capacity</div>
+        <div class="text-center">
+          <div id="us-result" class="font-display text-6xl font-700 gradient-text-31p mb-2">—</div>
+          <div id="us-unit"   class="text-2xl text-gray-400 font-display mb-5">Gbps</div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-5">
+          <div class="bg-black/30 rounded-xl p-3 border border-docsis31p/15 text-center">
+            <div class="text-gray-500 text-xs mb-1">OFDMA</div>
+            <div id="r-ofdma" class="font-semibold text-docsis31p text-base">—</div>
+          </div>
+          <div class="bg-black/30 rounded-xl p-3 border border-docsis31/15 text-center">
+            <div class="text-gray-500 text-xs mb-1">A-TDMA</div>
+            <div id="r-atdma" class="font-semibold text-docsis31 text-base">—</div>
+          </div>
+        </div>
+        <!-- US Spectrum bar -->
+        <div>
+          <div class="flex justify-between text-xs text-gray-500 mb-1">
+            <span id="us-band-label">US Spectrum (D3.1 low-split: 80 MHz)</span>
+            <span id="r-us-pct" class="text-gray-400">—</span>
+          </div>
+          <div class="h-5 bg-gray-800 rounded-full overflow-hidden flex">
+            <div id="r-spec-ofdma" class="h-full bar-animate" style="width:0%;background:rgba(168,85,247,0.55)"></div>
+            <div id="r-spec-atdma" class="h-full bar-animate" style="width:0%;background:rgba(59,130,246,0.45)"></div>
+          </div>
+          <div class="flex text-xs text-gray-600 mt-1 gap-3">
+            <span><span style="color:rgba(168,85,247,0.9)">■</span> OFDMA <span id="r-us-ofdma-mhz"></span></span>
+            <span><span style="color:rgba(59,130,246,0.9)">■</span> A-TDMA <span id="r-us-atdma-mhz"></span></span>
+            <span class="ml-auto text-gray-700">Available</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upstream formulas -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <h4 class="font-display font-600 text-white mb-4 text-sm">Upstream Technology Reference</h4>
+        <div class="font-mono text-xs bg-black/50 rounded-xl p-4 border border-white/5 text-gray-300 leading-relaxed">
+          <div class="text-docsis31/70 mb-1"># A-TDMA (upstream SC-QAM):</div>
+          <div>C = N_ch × log₂(M) × R_c × 5.12 Msps</div>
+          <div id="formula-atdma" class="text-docsis31 mt-1 mb-3">  N_ch = 8 ch × 6.4 MHz, 64-QAM</div>
+          <div class="text-docsis31p/70 mb-1"># OFDMA (upstream OFDM access):</div>
+          <div>C = N_ch × N_sc × log₂(M) × R_c × f_s</div>
+          <div id="formula-ofdma" class="text-docsis31p mt-1">  Uses same QAM &amp; coding rate as DS config</div>
+        </div>
+      </div>
+
+      <!-- Upstream compat -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <h4 class="font-display font-600 text-white mb-4 text-sm">Upstream DOCSIS Compatibility</h4>
+        <div id="us-compat-content"></div>
       </div>
 
     </div>
@@ -758,6 +934,31 @@ tailwind = { config: { theme: { extend: {
 const QAM_ORDERS  = [16, 64, 256, 1024, 2048, 4096];
 const CODING_RATE_DEFAULT = 0.94;
 
+// DS spectrum available for DOCSIS 3.1 (85–1218 MHz)
+const DS_BAND_MHZ = 1133;
+// US spectrum for DOCSIS 3.1 low-split (5–85 MHz)
+const US_BAND_MHZ = 80;
+
+// DS SC-QAM: 6 MHz Annex B channel, 5.057 Msps (CableLabs spec)
+const SCQAM_DS_SYMRATE = 5.057e6;
+// US A-TDMA: 6.4 MHz channel, 5.12 Msps
+const ATDMA_SYMRATE    = 5.12e6;
+const ATDMA_CH_MHZ     = 6.4;
+const CODING_RATE_SCQAM = 0.94;
+
+function calcSCQAMDS(channels, qam) {
+  return channels * Math.log2(qam) * CODING_RATE_SCQAM * SCQAM_DS_SYMRATE;
+}
+function calcATDMA(channels, qam) {
+  return channels * Math.log2(qam) * CODING_RATE_SCQAM * ATDMA_SYMRATE;
+}
+
+// Upstream OFDMA configs (active subcarriers, 25 kHz spacing)
+const OFDMA_US = {
+  24: { active: 860,  spacing: 25 },
+  96: { active: 3500, spacing: 25 },
+};
+
 // OFDM channel parameters: [channelWidthMHz, spacingKHz, totalSubcarriers, activeSubcarriers, symbolRateMsps, docsis]
 const OFDM_CONFIGS = [
   { width: 24,  spacing: 25, total: 960,  active: 860,  symRate:  25e3, docsis: ['3.1','3.1+','4.0'] },
@@ -775,6 +976,12 @@ let state = {
   qamIdx: 5,          // 4096-QAM
   codingRate: 0.94,
   channels: 2,
+  scqamChannels: 16,
+  scqamQam: 256,
+  atdmaChannels: 8,
+  atdmaQam: 64,
+  ofdmaChannels: 1,
+  ofdmaWidth: 96,
 };
 
 /* ─────────────────────────────────────────
@@ -811,6 +1018,24 @@ function setSpacing(s) {
   document.getElementById('sc-' + s).classList.add('active');
   updateCalc();
 }
+function setSCQAMQam(q) {
+  state.scqamQam = q;
+  document.querySelectorAll('.scq-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('scq-' + q).classList.add('active');
+  updateCalc();
+}
+function setATDMAQam(q) {
+  state.atdmaQam = q;
+  document.querySelectorAll('.atdma-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('atdma-' + q).classList.add('active');
+  updateUpstream();
+}
+function setOFDMAWidth(w) {
+  state.ofdmaWidth = w;
+  document.querySelectorAll('.ofdma-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('ofdma-' + w).classList.add('active');
+  updateUpstream();
+}
 
 /* ─── Button styles ─── */
 const styleSheet = document.styleSheets[0];
@@ -838,32 +1063,60 @@ function updateSliderFill(el) {
 
 /* ─── Main calculator update ─── */
 function updateCalc() {
-  const qamSlider = document.getElementById('qam-slider');
-  const crSlider  = document.getElementById('cr-slider');
-  const chSlider  = document.getElementById('ch-slider');
+  const qamSlider   = document.getElementById('qam-slider');
+  const crSlider    = document.getElementById('cr-slider');
+  const chSlider    = document.getElementById('ch-slider');
+  const scqamSlider = document.getElementById('scqam-slider');
 
   state.qamIdx      = parseInt(qamSlider.value);
   state.codingRate  = parseInt(crSlider.value) / 100;
   state.channels    = parseInt(chSlider.value);
+  state.scqamChannels = parseInt(scqamSlider.value);
 
   const qam = QAM_ORDERS[state.qamIdx];
 
   // Update labels
-  document.getElementById('qam-label').textContent = qam.toLocaleString();
-  document.getElementById('cr-label').textContent  = state.codingRate.toFixed(2);
-  document.getElementById('ch-label').textContent  = state.channels;
+  document.getElementById('qam-label').textContent   = qam.toLocaleString();
+  document.getElementById('cr-label').textContent    = state.codingRate.toFixed(2);
+  document.getElementById('ch-label').textContent    = state.channels;
+  document.getElementById('scqam-label').textContent = state.scqamChannels;
 
   // Update slider fills
-  [qamSlider, crSlider, chSlider].forEach(updateSliderFill);
+  [qamSlider, crSlider, chSlider, scqamSlider].forEach(updateSliderFill);
 
   const cfg = getConfig();
-  const bitsPerSym = Math.log2(qam);
-  const symbolRateHz = cfg.spacing * 1000; // spacing in kHz → Hz
-  const totalBps = calcCapacity(cfg.active, qam, state.codingRate, symbolRateHz, state.channels);
+  const bitsPerSym   = Math.log2(qam);
+  const symbolRateHz = cfg.spacing * 1000;
+  const ofdmBps      = calcCapacity(cfg.active, qam, state.codingRate, symbolRateHz, state.channels);
+  const scqamBps     = calcSCQAMDS(state.scqamChannels, state.scqamQam);
+  const totalBps     = ofdmBps + scqamBps;
 
-  const fmt = formatBps(totalBps);
+  const fmt      = formatBps(totalBps);
+  const fmtOFDM  = formatBps(ofdmBps);
+  const fmtSCQAM = formatBps(scqamBps);
+
   document.getElementById('calc-result').textContent = fmt.val;
   document.getElementById('calc-unit').textContent   = fmt.unit;
+  document.getElementById('r-ofdm').textContent      = `${fmtOFDM.val} ${fmtOFDM.unit}`;
+  document.getElementById('r-scqam').textContent     = `${fmtSCQAM.val} ${fmtSCQAM.unit}`;
+
+  // DS spectrum utilization (1133 MHz = 85–1218 MHz)
+  const ofdmMhz   = state.channels * state.channelWidth;
+  const scqamMhz  = state.scqamChannels * 6;
+  const totalMhz  = ofdmMhz + scqamMhz;
+  const ofdmPct   = Math.min((ofdmMhz  / DS_BAND_MHZ) * 100, 100);
+  const scqamPct  = Math.min((scqamMhz / DS_BAND_MHZ) * 100, 100 - ofdmPct);
+  document.getElementById('r-spec-ofdm').style.width  = `${ofdmPct.toFixed(1)}%`;
+  document.getElementById('r-spec-scqam').style.width = `${scqamPct.toFixed(1)}%`;
+  document.getElementById('r-spec-pct').textContent   = `${Math.min((totalMhz/DS_BAND_MHZ)*100,100).toFixed(0)}% used`;
+  document.getElementById('r-spec-ofdm-mhz').textContent  = `${ofdmMhz} MHz`;
+  document.getElementById('r-spec-scqam-mhz').textContent = `${scqamMhz} MHz`;
+  if (totalMhz > DS_BAND_MHZ) {
+    document.getElementById('r-spec-pct').textContent = `⚠ ${totalMhz} MHz exceeds 1133 MHz DS band`;
+    document.getElementById('r-spec-pct').style.color = '#f87171';
+  } else {
+    document.getElementById('r-spec-pct').style.color = '';
+  }
 
   document.getElementById('r-subcarriers').textContent = (cfg.active * state.channels).toLocaleString();
   document.getElementById('r-bits').textContent        = bitsPerSym.toFixed(0);
@@ -879,7 +1132,7 @@ function updateCalc() {
   document.getElementById('formula-fs').innerHTML   =
     `  f_s   = <span>${(symbolRateHz/1e3).toFixed(0)} kHz subcarrier spacing</span>`;
   document.getElementById('formula-total').innerHTML =
-    `  C_total = ${fmt.val} ${fmt.unit} (${state.channels} OFDM channels)`;
+    `  C_total = ${fmtOFDM.val} ${fmtOFDM.unit} OFDM + ${fmtSCQAM.val} ${fmtSCQAM.unit} SC-QAM = ${fmt.val} ${fmt.unit}`;
 
   // Comparison bars
   const standards = [
@@ -959,6 +1212,126 @@ function updateCalc() {
     (warnMsg ? `<p class="text-xs text-yellow-400 mt-3 pt-3 border-t border-white/5">${warnMsg}</p>` : '');
 
   applyBtnStyles();
+  applyMixedBtnStyles();
+  updateUpstream();
+}
+
+/* ─── Upstream calculator ─── */
+function updateUpstream() {
+  const atdmaSlider = document.getElementById('atdma-slider');
+  const ofdmaSlider = document.getElementById('ofdma-slider');
+  if (!atdmaSlider || !ofdmaSlider) return;
+
+  state.atdmaChannels = parseInt(atdmaSlider.value);
+  state.ofdmaChannels = parseInt(ofdmaSlider.value);
+  updateSliderFill(atdmaSlider);
+  updateSliderFill(ofdmaSlider);
+
+  document.getElementById('atdma-label').textContent = state.atdmaChannels;
+  document.getElementById('ofdma-label').textContent = state.ofdmaChannels;
+
+  const qam      = QAM_ORDERS[state.qamIdx];
+  const atdmaBps = calcATDMA(state.atdmaChannels, state.atdmaQam);
+  const ofdmaCfg = OFDMA_US[state.ofdmaWidth] || OFDMA_US[96];
+  const ofdmaBps = state.ofdmaChannels > 0
+    ? calcCapacity(ofdmaCfg.active, qam, state.codingRate, ofdmaCfg.spacing * 1000, state.ofdmaChannels)
+    : 0;
+  const totalUsBps = atdmaBps + ofdmaBps;
+
+  const fmtUS    = formatBps(totalUsBps);
+  const fmtOFDMA = formatBps(ofdmaBps);
+  const fmtATDMA = formatBps(atdmaBps);
+
+  document.getElementById('us-result').textContent = fmtUS.val;
+  document.getElementById('us-unit').textContent   = fmtUS.unit;
+  document.getElementById('r-ofdma').textContent   = `${fmtOFDMA.val} ${fmtOFDMA.unit}`;
+  document.getElementById('r-atdma').textContent   = `${fmtATDMA.val} ${fmtATDMA.unit}`;
+
+  // Upstream spectrum bar (D3.1 low-split: 80 MHz)
+  const atdmaMhz = state.atdmaChannels * ATDMA_CH_MHZ;
+  const ofdmaMhz = state.ofdmaChannels * state.ofdmaWidth;
+  const totalUsMhz = atdmaMhz + ofdmaMhz;
+  const ofdmaPct = Math.min((ofdmaMhz / US_BAND_MHZ) * 100, 100);
+  const atdmaPct = Math.min((atdmaMhz / US_BAND_MHZ) * 100, 100 - ofdmaPct);
+
+  document.getElementById('r-spec-ofdma').style.width = `${ofdmaPct.toFixed(1)}%`;
+  document.getElementById('r-spec-atdma').style.width = `${atdmaPct.toFixed(1)}%`;
+
+  const usedPct = Math.min((totalUsMhz / US_BAND_MHZ) * 100, 100);
+  const usPctEl = document.getElementById('r-us-pct');
+  if (totalUsMhz > US_BAND_MHZ) {
+    usPctEl.textContent = `⚠ ${totalUsMhz.toFixed(1)} MHz exceeds 80 MHz US band`;
+    usPctEl.style.color = '#f87171';
+  } else {
+    usPctEl.textContent = `${usedPct.toFixed(0)}% used (${totalUsMhz.toFixed(1)} MHz)`;
+    usPctEl.style.color = '';
+  }
+  document.getElementById('r-us-ofdma-mhz').textContent = `${ofdmaMhz} MHz`;
+  document.getElementById('r-us-atdma-mhz').textContent = `${atdmaMhz.toFixed(1)} MHz`;
+
+  // Formula display
+  document.getElementById('formula-atdma').innerHTML =
+    `  ${state.atdmaChannels} ch × 6.4 MHz, ${state.atdmaQam}-QAM → ${fmtATDMA.val} ${fmtATDMA.unit}`;
+  document.getElementById('formula-ofdma').innerHTML =
+    `  ${state.ofdmaChannels} ch × ${state.ofdmaWidth} MHz, ${qam}-QAM → ${fmtOFDMA.val} ${fmtOFDMA.unit}`;
+
+  // Upstream compatibility
+  const usCompatLevels = [
+    { name: 'DOCSIS 3.0',     ok: state.ofdmaChannels === 0,    note: 'A-TDMA only — no OFDMA upstream',         color: '#6b7280' },
+    { name: 'DOCSIS 3.1',     ok: state.ofdmaChannels <= 2 && state.atdmaChannels <= 8,
+      note: state.ofdmaChannels <= 2 ? 'OFDMA + A-TDMA coexistence' : 'OFDMA channels exceed D3.1 limit (max 2)', color: '#3b82f6' },
+    { name: 'DOCSIS 3.1+ FDX',ok: state.ofdmaChannels <= 2,
+      note: 'FDX expands upstream; same OFDMA channel limit',                                                       color: '#a855f7' },
+    { name: 'DOCSIS 4.0 ESD', ok: true,
+      note: state.ofdmaChannels > 0 ? 'ESD dramatically widens US band; A-TDMA still valid' : 'Full OFDMA upstream possible', color: '#10b981' },
+  ];
+  document.getElementById('us-compat-content').innerHTML =
+    usCompatLevels.map(c => `
+      <div class="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full shrink-0" style="background:${c.color}"></div>
+          <span class="text-sm font-medium" style="color:${c.ok ? c.color : '#6b7280'}">${c.name}</span>
+        </div>
+        <div class="text-right ml-4">
+          <span class="text-xs font-semibold" style="color:${c.ok ? '#4ade80' : '#f87171'}">${c.ok ? '✓ In spec' : '✗ Exceeds spec'}</span>
+          <div class="text-xs text-gray-600 mt-0.5">${c.note}</div>
+        </div>
+      </div>`).join('');
+
+  applyMixedBtnStyles();
+}
+
+function applyMixedBtnStyles() {
+  // SC-QAM buttons (blue)
+  document.querySelectorAll('.scq-btn').forEach(btn => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
+      btn.classList.add('border-docsis31/50','text-docsis31','bg-docsis31/10');
+    } else {
+      btn.classList.remove('border-docsis31/50','text-docsis31','bg-docsis31/10');
+      btn.classList.add('border-white/10','text-gray-400','bg-transparent');
+    }
+  });
+  // ATDMA buttons (blue)
+  document.querySelectorAll('.atdma-btn').forEach(btn => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
+      btn.classList.add('border-docsis31/50','text-docsis31','bg-docsis31/10');
+    } else {
+      btn.classList.remove('border-docsis31/50','text-docsis31','bg-docsis31/10');
+      btn.classList.add('border-white/10','text-gray-400','bg-transparent');
+    }
+  });
+  // OFDMA buttons (purple)
+  document.querySelectorAll('.ofdma-btn').forEach(btn => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
+      btn.classList.add('border-docsis31p/50','text-docsis31p','bg-docsis31p/10');
+    } else {
+      btn.classList.remove('border-docsis31p/50','text-docsis31p','bg-docsis31p/10');
+      btn.classList.add('border-white/10','text-gray-400','bg-transparent');
+    }
+  });
 }
 
 /* ─── OFDM Table ─── */
@@ -1126,7 +1499,11 @@ document.addEventListener('DOMContentLoaded', () => {
   buildCharts();
   buildOFDMTable();
   buildSpeedBars();
-  updateCalc();
+  // Set default active states for new button groups
+  document.getElementById('scq-256').classList.add('active');
+  document.getElementById('atdma-64').classList.add('active');
+  document.getElementById('ofdma-96').classList.add('active');
+  updateCalc();   // also calls updateUpstream() and applyMixedBtnStyles()
   applyBtnStyles();
 
   // Trigger animations on scroll (simple IntersectionObserver)
