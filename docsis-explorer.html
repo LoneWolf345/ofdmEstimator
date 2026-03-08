@@ -514,7 +514,7 @@ tailwind = { config: { theme: { extend: {
           <label class="text-sm font-semibold text-gray-300">DS SC-QAM Channels</label>
           <span id="scqam-label" class="text-docsis31 font-display font-700 text-lg">16</span>
         </div>
-        <input type="range" id="scqam-slider" class="w-full slider-31" min="0" max="32" step="1" value="16"
+        <input type="range" id="scqam-slider" class="w-full slider-31" min="0" max="32" step="1" value="24"
                oninput="updateCalc()" style="--val:50%">
         <div class="flex justify-between text-xs text-gray-600 mt-2">
           <span>0</span><span>8</span><span>16</span><span>24</span><span>32</span>
@@ -543,7 +543,7 @@ tailwind = { config: { theme: { extend: {
           <label class="text-sm font-semibold text-gray-300">OFDM Channels</label>
           <span id="ch-label" class="text-docsis31 font-display font-700 text-lg">2</span>
         </div>
-        <input type="range" id="ch-slider" class="w-full slider-31" min="0" max="8" step="1" value="2"
+        <input type="range" id="ch-slider" class="w-full slider-31" min="0" max="8" step="1" value="4"
                oninput="updateCalc()" style="--val:25%">
         <div class="flex justify-between text-xs text-gray-600 mt-2">
           <span>0</span><span>1</span><span>2</span><span>4</span><span>6</span><span>8</span>
@@ -588,8 +588,8 @@ tailwind = { config: { theme: { extend: {
       <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
         <label class="block text-sm font-semibold text-gray-300 mb-4">Subcarrier Spacing</label>
         <div class="flex gap-2">
-          <button onclick="setSpacing(25)"  id="sc-25"  class="sc-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all active">25 kHz</button>
-          <button onclick="setSpacing(50)"  id="sc-50"  class="sc-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all">50 kHz</button>
+          <button onclick="setSpacing(25)"  id="sc-25"  class="sc-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all">25 kHz</button>
+          <button onclick="setSpacing(50)"  id="sc-50"  class="sc-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all active">50 kHz</button>
         </div>
         <p class="text-xs text-gray-600 mt-3">25 kHz gives more subcarriers; 50 kHz is more robust to multipath</p>
       </div>
@@ -1386,17 +1386,17 @@ const OFDM_CONFIGS = [
 /* ─── State ─── */
 let state = {
   channelWidth: 192,
-  spacing: 25,
+  spacing: 50,
   qamIdx: 5,
   codingRate: 0.94,
-  channels: 2,
-  scqamChannels: 16,
+  channels: 4,
+  scqamChannels: 24,
   scqamQam: 256,
   atdmaChannels: 8,
   atdmaQam: 64,
   ofdmaChannels: 1,
   ofdmaWidth: 96,
-  splitType: 'low',
+  splitType: 'high',
   maxDsFreq: 1218,
 };
 
@@ -1939,7 +1939,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('scq-256').classList.add('active');
   document.getElementById('atdma-64').classList.add('active');
   document.getElementById('ofdma-96').classList.add('active');
-  document.getElementById('split-low').classList.add('active');
+  document.getElementById('split-high').classList.add('active');
   document.getElementById('freq-1218').classList.add('active');
 
   updatePlantDisplay();
