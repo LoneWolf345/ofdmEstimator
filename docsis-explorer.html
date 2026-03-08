@@ -903,41 +903,135 @@ tailwind = { config: { theme: { extend: {
   </div>
 </section>
 
-<!-- OFDM REFERENCE TABLE -->
-<section id="ofdm-table" class="max-w-7xl mx-auto px-6 py-16">
-  <div class="text-center mb-12">
-    <h2 class="font-display text-3xl font-700 text-white mb-3">OFDM Channel Capacity Reference</h2>
-    <p class="text-gray-500 text-sm">Subcarrier count and theoretical capacity by channel width and spacing at 4096-QAM, coding rate 0.94</p>
-  </div>
-  <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur overflow-hidden">
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="bg-black/50 border-b border-white/10">
-            <th class="text-left px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Channel Width</th>
-            <th class="text-left px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Subcarrier Spacing</th>
-            <th class="text-right px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Total Subcarriers</th>
-            <th class="text-right px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Active Subcarriers</th>
-            <th class="text-right px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Symbol Rate (Msps)</th>
-            <th class="text-right px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">Capacity @ 4096-QAM</th>
-            <th class="text-center px-6 py-4 text-gray-400 font-semibold text-xs uppercase tracking-wider">DOCSIS</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-white/5" id="ofdm-table-body"></tbody>
-      </table>
-    </div>
-  </div>
-  <p class="text-xs text-gray-600 mt-4 text-center">
-    Note: Active subcarriers exclude pilot tones and guard bands (~92% of total). Symbol rate = subcarrier spacing × FFT efficiency.
-  </p>
-</section>
-
 <!-- TECHNOLOGY COMPARISON -->
 <section id="technology" class="max-w-7xl mx-auto px-6 py-16">
   <div class="text-center mb-12">
     <h2 class="font-display text-3xl font-700 text-white mb-3">Technology Architecture</h2>
     <p class="text-gray-500 text-sm">Physical layer innovations across DOCSIS generations</p>
   </div>
+
+  <!-- Legacy generations row label -->
+  <div class="flex items-center gap-3 mb-5">
+    <span class="text-xs font-semibold tracking-widest text-gray-500 uppercase">Legacy Generations · SC-QAM Era</span>
+    <div class="flex-1 h-px bg-white/5"></div>
+  </div>
+
+  <!-- D1.0, D1.1, D2.0, D3.0 -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+
+    <!-- DOCSIS 1.0 -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur overflow-hidden group hover:border-white/20 transition-all duration-300">
+      <div class="h-1.5 bg-gradient-to-r from-gray-600 to-gray-400"></div>
+      <div class="p-5">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
+            <span class="font-display font-700 text-gray-400 text-xs">1.0</span>
+          </div>
+          <div>
+            <div class="font-display font-700 text-white text-sm">DOCSIS 1.0</div>
+            <div class="text-xs text-gray-500">Released 1997</div>
+          </div>
+        </div>
+        <div class="space-y-2.5 mb-4">
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gray-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">Single SC-QAM Channel</div><div class="text-xs text-gray-500">1× 6 MHz, up to 256-QAM downstream</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gray-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">TDMA Upstream</div><div class="text-xs text-gray-500">16-QAM, up to 3.2 MHz channel width</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gray-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">Best-Effort Service</div><div class="text-xs text-gray-500">No QoS or channel bonding</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gray-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">BPI Encryption</div><div class="text-xs text-gray-500">Baseline privacy for downstream</div></div></div>
+        </div>
+        <div class="grid grid-cols-2 gap-1.5 text-center">
+          <div class="bg-white/5 rounded-lg p-2 border border-white/5"><div class="text-gray-300 font-display font-700">38</div><div class="text-xs text-gray-500">Mbps Down</div></div>
+          <div class="bg-white/5 rounded-lg p-2 border border-white/5"><div class="text-gray-300 font-display font-700">10</div><div class="text-xs text-gray-500">Mbps Up</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCSIS 1.1 -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur overflow-hidden group hover:border-white/20 transition-all duration-300">
+      <div class="h-1.5 bg-gradient-to-r from-stone-500 to-stone-300"></div>
+      <div class="p-5">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
+            <span class="font-display font-700 text-gray-400 text-xs">1.1</span>
+          </div>
+          <div>
+            <div class="font-display font-700 text-white text-sm">DOCSIS 1.1</div>
+            <div class="text-xs text-gray-500">Released 1999</div>
+          </div>
+        </div>
+        <div class="space-y-2.5 mb-4">
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-stone-400 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">QoS Service Flows</div><div class="text-xs text-gray-500">Standardized traffic prioritization</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-stone-400 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">BPI+ Security</div><div class="text-xs text-gray-500">Enhanced encryption and authentication</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-stone-400 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">VoIP Foundation</div><div class="text-xs text-gray-500">PacketCable-compatible scheduling</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-stone-400 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">Fragmentation &amp; Concat</div><div class="text-xs text-gray-500">Upstream efficiency improvements</div></div></div>
+        </div>
+        <div class="grid grid-cols-2 gap-1.5 text-center">
+          <div class="bg-white/5 rounded-lg p-2 border border-white/5"><div class="text-gray-300 font-display font-700">38</div><div class="text-xs text-gray-500">Mbps Down</div></div>
+          <div class="bg-white/5 rounded-lg p-2 border border-white/5"><div class="text-gray-300 font-display font-700">10</div><div class="text-xs text-gray-500">Mbps Up</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCSIS 2.0 -->
+    <div class="rounded-2xl border border-amber-500/20 bg-gray-900/60 backdrop-blur overflow-hidden group hover:border-amber-500/40 transition-all duration-300">
+      <div class="h-1.5 bg-gradient-to-r from-amber-500 to-amber-400"></div>
+      <div class="p-5">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
+            <span class="font-display font-700 text-amber-400 text-xs">2.0</span>
+          </div>
+          <div>
+            <div class="font-display font-700 text-white text-sm">DOCSIS 2.0</div>
+            <div class="text-xs text-gray-500">Released 2001</div>
+          </div>
+        </div>
+        <div class="space-y-2.5 mb-4">
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">A-TDMA Upstream</div><div class="text-xs text-gray-500">6.4 MHz channels, 3× more US bandwidth</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">S-CDMA Option</div><div class="text-xs text-gray-500">Synchronous CDMA for noisy plant conditions</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">64-QAM Upstream</div><div class="text-xs text-gray-500">Higher modulation vs 1.x 16-QAM</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">Unchanged Downstream</div><div class="text-xs text-gray-500">DS same as D1.1; focus was upstream</div></div></div>
+        </div>
+        <div class="grid grid-cols-2 gap-1.5 text-center">
+          <div class="bg-amber-500/10 rounded-lg p-2 border border-amber-500/15"><div class="text-amber-400 font-display font-700">38</div><div class="text-xs text-gray-500">Mbps Down</div></div>
+          <div class="bg-amber-500/10 rounded-lg p-2 border border-amber-500/15"><div class="text-amber-400 font-display font-700">30</div><div class="text-xs text-gray-500">Mbps Up</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCSIS 3.0 -->
+    <div class="rounded-2xl border border-yellow-500/20 bg-gray-900/60 backdrop-blur overflow-hidden group hover:border-yellow-500/40 transition-all duration-300">
+      <div class="h-1.5 bg-gradient-to-r from-yellow-500 to-yellow-300"></div>
+      <div class="p-5">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-9 h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20">
+            <span class="font-display font-700 text-yellow-400 text-xs">3.0</span>
+          </div>
+          <div>
+            <div class="font-display font-700 text-white text-sm">DOCSIS 3.0</div>
+            <div class="text-xs text-gray-500">Released 2006</div>
+          </div>
+        </div>
+        <div class="space-y-2.5 mb-4">
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">Channel Bonding</div><div class="text-xs text-gray-500">Up to 32 DS + 8 US SC-QAM channels</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">IPv6 Native Support</div><div class="text-xs text-gray-500">Dual-stack IPv4/IPv6 at the MAC layer</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">AES-128 Encryption</div><div class="text-xs text-gray-500">Stronger security over BPI+</div></div></div>
+          <div class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-1.5 shrink-0"></div><div><div class="text-xs font-medium text-white">MDD Messaging</div><div class="text-xs text-gray-500">MAC Domain Descriptor for flexible config</div></div></div>
+        </div>
+        <div class="grid grid-cols-2 gap-1.5 text-center">
+          <div class="bg-yellow-500/10 rounded-lg p-2 border border-yellow-500/15"><div class="text-yellow-400 font-display font-700">1.2</div><div class="text-xs text-gray-500">Gbps Down</div></div>
+          <div class="bg-yellow-500/10 rounded-lg p-2 border border-yellow-500/15"><div class="text-yellow-400 font-display font-700">200</div><div class="text-xs text-gray-500">Mbps Up</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modern OFDM era row label -->
+  <div class="flex items-center gap-3 mb-6">
+    <span class="text-xs font-semibold tracking-widest text-gray-500 uppercase">Modern OFDM Era</span>
+    <div class="flex-1 h-px bg-white/5"></div>
+  </div>
+
+  <!-- D3.1, D3.1+, D4.0 -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
     <div class="rounded-2xl border border-docsis31/20 bg-gray-900/60 backdrop-blur overflow-hidden group hover:border-docsis31/40 transition-all duration-300">
@@ -1720,39 +1814,6 @@ function applyPlantBtnStyles() {
   });
 }
 
-/* ─── OFDM Table ─── */
-function buildOFDMTable() {
-  const tbody = document.getElementById('ofdm-table-body');
-  const qam   = 4096;
-  const rc    = 0.94;
-  const rows = OFDM_CONFIGS.map(cfg => {
-    const bps    = calcCapacity(cfg.active, qam, rc, cfg.spacing * 1000, 1);
-    const fmt    = formatBps(bps);
-    const widthColor = cfg.width === 192 ? 'text-neon' : cfg.width === 96 ? 'text-docsis31p' : 'text-docsis31';
-    const rowCls = cfg.width === 192 ? 'bg-neon/3 hover:bg-neon/5' : 'hover:bg-white/3';
-    return `<tr class="${rowCls} transition-colors">
-      <td class="px-6 py-4 font-semibold ${widthColor}">${cfg.width} MHz</td>
-      <td class="px-6 py-4 text-gray-300">${cfg.spacing} kHz</td>
-      <td class="px-6 py-4 text-right text-gray-300">${cfg.total.toLocaleString()}</td>
-      <td class="px-6 py-4 text-right text-white font-medium">${cfg.active.toLocaleString()}</td>
-      <td class="px-6 py-4 text-right text-gray-400">${(cfg.spacing / 1000).toFixed(3)}</td>
-      <td class="px-6 py-4 text-right">
-        <span class="font-display font-700 ${widthColor}">${fmt.val}</span>
-        <span class="text-gray-500 text-xs ml-1">${fmt.unit}</span>
-      </td>
-      <td class="px-6 py-4 text-center">
-        <div class="flex gap-1 justify-center flex-wrap">${cfg.docsis.map(d => {
-          const cls = d === '4.0' ? 'bg-docsis40/20 text-docsis40 border-docsis40/30'
-                    : d === '3.1+' ? 'bg-docsis31p/20 text-docsis31p border-docsis31p/30'
-                    : 'bg-docsis31/20 text-docsis31 border-docsis31/30';
-          return `<span class="badge ${cls} border">${d}</span>`;
-        }).join('')}</div>
-      </td>
-    </tr>`;
-  });
-  tbody.innerHTML = rows.join('');
-}
-
 /* ─── Progression bars ─── */
 function buildProgressionBars() {
   const dsData = [
@@ -1873,7 +1934,6 @@ function buildCharts() {
 /* ─── Init ─── */
 document.addEventListener('DOMContentLoaded', () => {
   buildCharts();
-  buildOFDMTable();
   buildProgressionBars();
 
   document.getElementById('scq-256').classList.add('active');
