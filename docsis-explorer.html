@@ -179,8 +179,8 @@ tailwind = { config: { theme: { extend: {
       <div class="space-y-2 mb-3">
         <div class="bg-black/30 rounded-lg p-2 border border-white/5">
           <div class="text-xs text-gray-500 mb-0.5">Downstream</div>
-          <div class="text-base font-display font-700 text-gray-300">27 <span class="text-sm">Mbps</span></div>
-          <div class="text-xs text-gray-600">1× 6 MHz · 64-QAM</div>
+          <div class="text-base font-display font-700 text-gray-300">38 <span class="text-sm">Mbps</span></div>
+          <div class="text-xs text-gray-600">1× 6 MHz · 256-QAM</div>
         </div>
         <div class="bg-black/30 rounded-lg p-2 border border-white/5">
           <div class="text-xs text-gray-500 mb-0.5">Upstream</div>
@@ -200,7 +200,7 @@ tailwind = { config: { theme: { extend: {
         </div>
         <div>
           <div class="font-display font-700 text-white text-sm">DOCSIS 1.1</div>
-          <div class="text-xs text-gray-600">2001</div>
+          <div class="text-xs text-gray-600">1999</div>
         </div>
       </div>
       <div class="space-y-2 mb-3">
@@ -215,7 +215,7 @@ tailwind = { config: { theme: { extend: {
           <div class="text-xs text-gray-600">TDMA · 64-QAM</div>
         </div>
       </div>
-      <div class="text-xs text-gray-600 border-t border-white/5 pt-2">256-QAM DS · QoS added</div>
+      <div class="text-xs text-gray-600 border-t border-white/5 pt-2">QoS · BPI+ security · VoIP</div>
     </div>
 
     <!-- DOCSIS 2.0 -->
@@ -359,7 +359,7 @@ tailwind = { config: { theme: { extend: {
       <div class="relative z-10">
         <div class="flex items-center justify-between mb-6">
           <div>
-            <span class="text-xs font-semibold tracking-widest text-docsis40/70 uppercase">DOCSIS · 2017/2020</span>
+            <span class="text-xs font-semibold tracking-widest text-docsis40/70 uppercase">DOCSIS · 2020</span>
             <div class="font-display text-4xl font-700 gradient-text-40 leading-none mt-0.5">4.0</div>
           </div>
           <div class="w-12 h-12 rounded-xl bg-docsis40/15 flex items-center justify-center border border-docsis40/20">
@@ -1756,22 +1756,22 @@ function buildOFDMTable() {
 /* ─── Progression bars ─── */
 function buildProgressionBars() {
   const dsData = [
-    { label: 'DOCSIS 1.0 (1997)', val: 0.027,  max: 10, disp: '27 Mbps',  color: '#6b7280' },
-    { label: 'DOCSIS 1.1 (2001)', val: 0.038,  max: 10, disp: '38 Mbps',  color: '#9ca3af' },
+    { label: 'DOCSIS 1.0 (1997)', val: 0.038,  max: 10, disp: '38 Mbps',  color: '#6b7280' },
+    { label: 'DOCSIS 1.1 (1999)', val: 0.038,  max: 10, disp: '38 Mbps',  color: '#9ca3af' },
     { label: 'DOCSIS 2.0 (2001)', val: 0.038,  max: 10, disp: '38 Mbps',  color: '#f59e0b' },
     { label: 'DOCSIS 3.0 (2006)', val: 1.2,    max: 10, disp: '1.2 Gbps', color: '#eab308' },
     { label: 'DOCSIS 3.1 (2013)', val: 10,     max: 10, disp: '10 Gbps',  color: '#3b82f6' },
     { label: 'DOCSIS 3.1+ FDX',   val: 10,     max: 10, disp: '10 Gbps',  color: '#a855f7' },
-    { label: 'DOCSIS 4.0 (2017)', val: 10,     max: 10, disp: '10 Gbps',  color: '#10b981' },
+    { label: 'DOCSIS 4.0 (2020)', val: 10,     max: 10, disp: '10 Gbps',  color: '#10b981' },
   ];
   const usData = [
     { label: 'DOCSIS 1.0 (1997)', val: 0.010,  max: 6, disp: '10 Mbps',   color: '#6b7280' },
-    { label: 'DOCSIS 1.1 (2001)', val: 0.010,  max: 6, disp: '10 Mbps',   color: '#9ca3af' },
+    { label: 'DOCSIS 1.1 (1999)', val: 0.010,  max: 6, disp: '10 Mbps',   color: '#9ca3af' },
     { label: 'DOCSIS 2.0 (2001)', val: 0.030,  max: 6, disp: '30 Mbps',   color: '#f59e0b' },
     { label: 'DOCSIS 3.0 (2006)', val: 0.200,  max: 6, disp: '200 Mbps',  color: '#eab308' },
     { label: 'DOCSIS 3.1 (2013)', val: 1.5,    max: 6, disp: '1.5 Gbps',  color: '#3b82f6' },
     { label: 'DOCSIS 3.1+ FDX',   val: 6,      max: 6, disp: '~6 Gbps',   color: '#a855f7' },
-    { label: 'DOCSIS 4.0 (2017)', val: 6,      max: 6, disp: '6 Gbps',    color: '#10b981' },
+    { label: 'DOCSIS 4.0 (2020)', val: 6,      max: 6, disp: '6 Gbps',    color: '#10b981' },
   ];
 
   function renderBars(containerId, data) {
