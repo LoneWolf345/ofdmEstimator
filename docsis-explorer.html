@@ -551,9 +551,10 @@ tailwind = { config: { theme: { extend: {
         <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
           <div class="flex items-center justify-center text-gray-400 border-r border-black/20" style="width:12%;background:rgba(107,114,128,0.12)">D3.0: 0</div>
           <div class="flex items-center justify-center text-docsis31 border-r border-black/20" style="width:25%;background:rgba(59,130,246,0.15)">D3.1 ≤2</div>
-          <div class="flex items-center justify-center text-docsis40" style="width:63%;background:rgba(16,185,129,0.12)">D4.0 ESD · 3–8 channels</div>
+          <div class="flex items-center justify-center text-docsis31p border-r border-black/20" style="width:38%;background:rgba(168,85,247,0.12)">D3.1+ ≤5</div>
+          <div class="flex items-center justify-center text-docsis40" style="width:25%;background:rgba(16,185,129,0.12)">D4.0 ESD ≤8</div>
         </div>
-        <p class="text-xs text-gray-600 mt-1">0 = SC-QAM only (D3.0 mode). MULPI spec: max 2 OFDM channels per node (D3.1).</p>
+        <p class="text-xs text-gray-600 mt-1">0 = SC-QAM only (D3.0 mode). MULPI spec: max 2 OFDM channels (D3.1), up to 5 (D3.1+), up to 8 (D4.0 ESD).</p>
       </div>
 
       <!-- QAM Order — second -->
@@ -1292,7 +1293,7 @@ tailwind = { config: { theme: { extend: {
         <div class="px-2 py-0.5 rounded-md bg-docsis31/20 text-docsis31 font-display font-700 text-sm shrink-0 mt-0.5">MULPI</div>
         <div>
           <div class="text-white font-semibold text-sm mb-1">MAC and Upper Layer Protocols Interface</div>
-          <p class="text-gray-500 text-xs leading-relaxed">The CableLabs specification document that defines the DOCSIS MAC layer. The <strong class="text-gray-300">D3.1 MULPI spec</strong> is the authoritative source for rules like "max 2 downstream OFDM channels per cable modem" and upstream OFDMA grant scheduling.</p>
+          <p class="text-gray-500 text-xs leading-relaxed">The CableLabs specification document that defines the DOCSIS MAC layer. The <strong class="text-gray-300">D3.1 MULPI spec</strong> is the authoritative source for rules like "max 2 downstream OFDM channels per cable modem (D3.1), up to 5 (D3.1+)" and upstream OFDMA grant scheduling.</p>
         </div>
       </div>
     </div>
@@ -1568,7 +1569,7 @@ function updateCalc() {
   const compatLevels = [
     { name: 'DOCSIS 3.0',      ok: false, always: false, note: 'SC-QAM only — no OFDM channels', color: '#6b7280' },
     { name: 'DOCSIS 3.1',      ok: ch <= 2, note: ch <= 2 ? 'Max 2 downstream OFDM channels per node' : `${ch} channels exceeds spec (max 2)`, color: '#3b82f6' },
-    { name: 'DOCSIS 3.1+ FDX', ok: ch <= 2, note: ch <= 2 ? 'Full Duplex addendum — same OFDM channel limit' : `${ch} channels exceeds spec (max 2)`, color: '#a855f7' },
+    { name: 'DOCSIS 3.1+ FDX', ok: ch <= 5, note: ch <= 5 ? 'DOCSIS 3.1+ supports up to 5 downstream OFDM channels' : `${ch} channels exceeds D3.1+ spec (max 5)`, color: '#a855f7' },
     { name: 'DOCSIS 4.0 ESD',  ok: ch <= 6, note: ch <= 2 ? 'Well within ESD capability' : ch <= 6 ? 'Multi-node ESD aggregation required' : `${ch} channels exceeds realistic capacity`, color: '#10b981' },
   ];
   document.getElementById('compat-content').innerHTML =
