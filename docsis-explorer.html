@@ -908,6 +908,22 @@ tailwind = { config: { theme: { extend: {
       </div>
     </div>
 
+    <!-- Minimum Compatible DOCSIS Callout -->
+    <div id="sp-compat-callout" class="mt-6 rounded-2xl border overflow-hidden transition-all duration-500">
+      <div id="sp-compat-bar" class="h-1.5"></div>
+      <div class="px-7 py-5 flex items-center gap-6">
+        <div class="shrink-0 text-center" style="min-width:110px">
+          <div class="text-xs text-gray-500 uppercase tracking-wider mb-2">Min. Compatible</div>
+          <div id="sp-compat-version" class="font-display font-700 leading-none" style="font-size:2.75rem">—</div>
+        </div>
+        <div class="h-14 w-px bg-white/10 shrink-0"></div>
+        <div>
+          <div id="sp-compat-name" class="font-semibold text-white text-base mb-1">—</div>
+          <div id="sp-compat-desc" class="text-sm text-gray-400 leading-relaxed"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1756,6 +1772,47 @@ function updateSpectrumSummary(totalUsBps, atdmaBps, ofdmaBps, atdmaMhz, ofdmaMh
   document.getElementById('sp-us-detail').textContent = `A-TDMA ${fmtA.val} ${fmtA.unit} + OFDMA ${fmtO.val} ${fmtO.unit}`;
   document.getElementById('sp-ds-total').textContent  = `${fmtDS.val} ${fmtDS.unit}`;
   document.getElementById('sp-ds-detail').textContent = `SC-QAM ${fmtSC.val} ${fmtSC.unit} + OFDM ${fmtOF.val} ${fmtOF.unit}`;
+
+  // ── Minimum Compatible DOCSIS callout ──
+  const _splitRank = { low: 0, mid: 1, high: 2, esd: 3 };
+  const _freqRank  = { 1002: 0, 1218: 1, 1794: 3 };
+  const _compat = [
+    { version: '3.0',  name: 'DOCSIS 3.0',        color: '#8a8c2a', color2: '#b0b240', rgb: '138,140,42'  },
+    { version: '3.1',  name: 'DOCSIS 3.1',         color: '#3b82f6', color2: '#60a5fa', rgb: '59,130,246'  },
+    { version: '3.1+', name: 'DOCSIS 3.1+  (FDX)', color: '#a855f7', color2: '#c084fc', rgb: '168,85,247'  },
+    { version: '4.0',  name: 'DOCSIS 4.0',         color: '#10b981', color2: '#34d399', rgb: '16,185,129'  },
+  ];
+  const _sr   = _splitRank[state.splitType] ?? 0;
+  const _fr   = _freqRank[state.maxDsFreq]  ?? 0;
+  const _rank = Math.max(_sr, _fr);
+  const _ci   = _compat[_rank];
+
+  // Context-aware description
+  const _splitDrives = _sr >= _fr, _freqDrives = _fr >= _sr;
+  const _descs = [
+    () => 'Low-split with 1002 MHz downstream — fully supported by DOCSIS 3.0 SC-QAM channel bonding.',
+    () => _splitDrives && _freqDrives
+            ? 'Mid-split upstream and 1218 MHz downstream both require OFDMA/OFDM introduced in DOCSIS 3.1.'
+            : _splitDrives
+              ? 'Mid-split upstream (to 204 MHz) requires OFDMA channel support introduced in DOCSIS 3.1.'
+              : '1218 MHz downstream requires OFDM channel support introduced in DOCSIS 3.1.',
+    () => 'High-split upstream (to 300 MHz) requires Full Duplex OFDMA with echo cancellation — DOCSIS 3.1+.',
+    () => _splitDrives && _freqDrives
+            ? 'ESD upstream (to 684 MHz) and 1794 MHz downstream both require Extended Spectrum DOCSIS 4.0.'
+            : _splitDrives
+              ? 'ESD upstream (to 684 MHz) requires Extended Spectrum DOCSIS 4.0.'
+              : '1794 MHz downstream requires Extended Spectrum DOCSIS 4.0.',
+  ];
+
+  const _callout = document.getElementById('sp-compat-callout');
+  _callout.style.borderColor       = `rgba(${_ci.rgb},0.35)`;
+  _callout.style.backgroundColor   = `rgba(${_ci.rgb},0.07)`;
+  document.getElementById('sp-compat-bar').style.background     = `linear-gradient(90deg,${_ci.color},${_ci.color2})`;
+  const _verEl = document.getElementById('sp-compat-version');
+  _verEl.style.color    = _ci.color;
+  _verEl.textContent    = _ci.version;
+  document.getElementById('sp-compat-name').textContent = _ci.name;
+  document.getElementById('sp-compat-desc').textContent = _descs[_rank]();
 }
 
 /* ─── Button styles ─── */
