@@ -103,7 +103,14 @@ function Calculate-DataRate {
     return $totalDataBits, $rateAcrossWholeChannelGbps, $phyEfficiency
 }
 
+# DOCSIS version DS modulation limits
+# 3.1:  4096-QAM (12 bit) mandatory max; 8192/16384-QAM optional per spec
+# 3.1+: uses optional 8192/16384-QAM modes from the D3.1 spec
+# 4.0:  16384-QAM (14 bit) mandatory
+$dsMaxModulation = @{ '3.1' = 12; '3.1+' = 14; '4.0' = 14 }
+
 # Main script execution
+$docsisVersion = Read-Host "Please enter the DOCSIS version (3.1, 3.1+, or 4.0)"
 $script:modemIp = Read-Host "Please enter the IP address of the modem"
 $script:samplingRate = 204.8  # MHz
 $script:cyclicPrefix = [int](Prompt-Or-Snmp -description "Ds Ofdm Cyclic Prefix" -example "512" -oid ".1.3.6.1.4.1.4491.2.1.28.1.9.1.8")
@@ -113,7 +120,7 @@ $script:numFftBlocks = 1
 $script:pilotDensityM = 48
 $script:excludedSubcarriers = 20
 $script:ncpModulationOrder = 6
-$script:numSymbolsPerProfile = 1
+$script:numSymbolsPerProfile = [int](1000 * $script:subcarrierSpacing)  # ~1 second of symbols for accurate codeword packing
 $script:ldpcFecCw = @(16200, 14216, 1800, 168, 16)  # [CWSize, Infobits, Parity, BCH, CWheader]
 
 $occupiedSpectrum = [double](Read-Host "Please enter the occupied spectrum in MHz (e.g., 96)")
@@ -124,6 +131,14 @@ $excludedBand = [double](Read-Host "Please enter the excluded band in MHz (e.g.,
 $actualSymbolPeriodUsec, $effectiveSubcarriers = Calculate-Parameters $occupiedSpectrum $lowerBandEdge $avgModulationOrder $guardBand $excludedBand $subcarrierSpacing
 $totalDataBits, $rateAcrossWholeChannelGbps, $phyEfficiency = Calculate-DataRate $actualSymbolPeriodUsec $effectiveSubcarriers $avgModulationOrder $occupiedSpectrum
 
+$maxDsMod = $dsMaxModulation[$docsisVersion]
+if ($avgModulationOrder -gt $maxDsMod) {
+    Write-Warning "Modulation order $avgModulationOrder exceeds DOCSIS $docsisVersion DS mandatory limit of $maxDsMod"
+} elseif ($docsisVersion -eq '3.1' -and $avgModulationOrder -gt 12) {
+    Write-Host "NOTE: Modulation order $avgModulationOrder is optional (not mandatory) in DOCSIS $docsisVersion"
+}
+
+Write-Host "DOCSIS Version: $docsisVersion"
 #Write-Host "Total Data Bits: $totalDataBits"
 Write-Host "Rate across Whole Channel [Gbps]: $rateAcrossWholeChannelGbps"
 #Write-Host "Downstream PHY Efficiency: $phyEfficiency"
