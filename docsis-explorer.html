@@ -46,6 +46,44 @@ tailwind = { config: { theme: { extend: {
   table thead th { position: sticky; top: 0; }
   .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; }
   .spectrum-seg { transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+  /* ── Hover tooltips ── */
+  .tip {
+    position: relative; cursor: help;
+    border-bottom: 1px dashed rgba(255,255,255,0.28);
+    text-underline-offset: 2px;
+  }
+  .tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%; transform: translateX(-50%);
+    background: #1a1f2e;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    padding: 9px 13px;
+    font-size: 0.71rem; line-height: 1.55;
+    color: #d1d5db;
+    width: max-content; max-width: 270px;
+    white-space: normal; text-align: left;
+    pointer-events: none;
+    opacity: 0; transition: opacity 0.18s;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    font-family: Inter, sans-serif; font-weight: 400;
+    letter-spacing: 0;
+  }
+  .tip::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(255,255,255,0.14);
+    pointer-events: none;
+    opacity: 0; transition: opacity 0.18s; z-index: 200;
+  }
+  .tip:hover::after, .tip:hover::before { opacity: 1; }
+  /* keep tooltip on-screen near left/right edges */
+  .tip:first-child::after { left: 0; transform: none; }
 </style>
 </head>
 <body class="font-sans text-gray-100 min-h-screen">
@@ -63,6 +101,7 @@ tailwind = { config: { theme: { extend: {
       <a href="#calculator" class="hover:text-white transition-colors">DS Calc</a>
       <a href="#upstream-calc" class="hover:text-white transition-colors">US Calc</a>
       <a href="#spectrum-summary" class="hover:text-white transition-colors">Spectrum</a>
+      <a href="#glossary"        class="hover:text-white transition-colors">Glossary</a>
     </div>
     <span class="text-xs text-gray-600 font-mono">v2025.2</span>
   </div>
@@ -269,7 +308,7 @@ tailwind = { config: { theme: { extend: {
             </div>
             <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
               <div class="text-xs text-gray-600 mb-1">Duplex</div>
-              <div class="text-sm font-semibold text-white">FDD (HFC)</div>
+              <div class="text-sm font-semibold text-white"><span class="tip" data-tip="FDD — Frequency Division Duplex: upstream and downstream use separate, non-overlapping frequency bands on the HFC plant. Simple and reliable; no echo cancellation needed.">FDD (HFC)</span></div>
             </div>
           </div>
         </div>
@@ -307,7 +346,7 @@ tailwind = { config: { theme: { extend: {
             </div>
             <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
               <div class="text-xs text-gray-600 mb-1">Duplex</div>
-              <div class="text-sm font-semibold text-white">FDX OFDMA</div>
+              <div class="text-sm font-semibold text-white"><span class="tip" data-tip="FDX — Full Duplex DOCSIS: simultaneous upstream & downstream on the same frequencies using a Network Echo Canceller (NEC) at the node. Enables ~6 Gbps upstream without a physical split upgrade.">FDX OFDMA</span></div>
             </div>
           </div>
         </div>
@@ -345,7 +384,7 @@ tailwind = { config: { theme: { extend: {
             </div>
             <div class="bg-black/30 rounded-lg p-3 border border-white/5 text-center">
               <div class="text-xs text-gray-600 mb-1">Duplex</div>
-              <div class="text-sm font-semibold text-white">ESD / FDX</div>
+              <div class="text-sm font-semibold text-white"><span class="tip" data-tip="ESD — Extended Spectrum DOCSIS: upstream extended to 684 MHz via a high split, giving 6 Gbps upstream without echo cancellation. FDX adds full-duplex in the overlap band.">ESD / FDX</span></div>
             </div>
           </div>
         </div>
@@ -465,7 +504,7 @@ tailwind = { config: { theme: { extend: {
       <!-- SC-QAM Section Header -->
       <div class="flex items-center gap-3">
         <div class="flex-1 h-px bg-docsis31/30"></div>
-        <span class="text-xs font-semibold text-docsis31 uppercase tracking-wider px-2">SC-QAM Downstream</span>
+        <span class="text-xs font-semibold text-docsis31 uppercase tracking-wider px-2 tip" data-tip="SC-QAM — Single Carrier QAM: traditional 6 MHz downstream channels at up to 256-QAM and 5.057 Msps. Deployed since DOCSIS 1.0; still used alongside OFDM in DOCSIS 3.1+ plants.">SC-QAM Downstream</span>
         <div class="flex-1 h-px bg-docsis31/30"></div>
       </div>
 
@@ -494,7 +533,7 @@ tailwind = { config: { theme: { extend: {
       <!-- OFDM Section Header -->
       <div class="flex items-center gap-3">
         <div class="flex-1 h-px bg-neon/30"></div>
-        <span class="text-xs font-semibold text-neon uppercase tracking-wider px-2">OFDM Downstream</span>
+        <span class="text-xs font-semibold text-neon uppercase tracking-wider px-2 tip" data-tip="OFDM — Orthogonal Frequency Division Multiplexing: splits a wide channel (24/96/192 MHz) into thousands of closely-spaced subcarriers. Supports up to 4096-QAM and LDPC coding; introduced in DOCSIS 3.1.">OFDM Downstream</span>
         <div class="flex-1 h-px bg-neon/30"></div>
       </div>
 
@@ -558,7 +597,7 @@ tailwind = { config: { theme: { extend: {
       <!-- Coding Rate -->
       <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
         <div class="flex items-center justify-between mb-3">
-          <label class="text-sm font-semibold text-gray-300">LDPC Coding Rate</label>
+          <label class="text-sm font-semibold text-gray-300"><span class="tip" data-tip="LDPC — Low-Density Parity-Check: forward error correction code used in DOCSIS 3.1+. Near-Shannon-limit performance. Max rate 0.94 means 94% data bits, 6% FEC overhead.">LDPC</span> Coding Rate</label>
           <span id="cr-label" class="text-docsis40 font-display font-700 text-lg">0.94</span>
         </div>
         <input type="range" id="cr-slider" class="w-full slider-40" min="50" max="94" step="1" value="94"
@@ -667,7 +706,7 @@ tailwind = { config: { theme: { extend: {
       <!-- A-TDMA Section Header -->
       <div class="flex items-center gap-3">
         <div class="flex-1 h-px bg-docsis31/30"></div>
-        <span class="text-xs font-semibold text-docsis31 uppercase tracking-wider px-2">A-TDMA Upstream</span>
+        <span class="text-xs font-semibold text-docsis31 uppercase tracking-wider px-2 tip" data-tip="A-TDMA — Advanced Time Division Multiple Access: legacy upstream access method. Modems share 6.4 MHz SC-QAM channels by transmitting in assigned time slots. Introduced in DOCSIS 2.0; still deployed alongside OFDMA.">A-TDMA Upstream</span>
         <div class="flex-1 h-px bg-docsis31/30"></div>
       </div>
 
@@ -697,7 +736,7 @@ tailwind = { config: { theme: { extend: {
       <!-- OFDMA Section Header -->
       <div class="flex items-center gap-3">
         <div class="flex-1 h-px bg-docsis31p/30"></div>
-        <span class="text-xs font-semibold text-docsis31p uppercase tracking-wider px-2">OFDMA Upstream</span>
+        <span class="text-xs font-semibold text-docsis31p uppercase tracking-wider px-2 tip" data-tip="OFDMA — Orthogonal Frequency Division Multiple Access: upstream counterpart to OFDM. Multiple modems share subcarriers in both time and frequency. Flexible bandwidth allocation per modem; introduced in DOCSIS 3.1.">OFDMA Upstream</span>
         <div class="flex-1 h-px bg-docsis31p/30"></div>
       </div>
 
@@ -972,6 +1011,205 @@ tailwind = { config: { theme: { extend: {
         <div class="grid grid-cols-2 gap-2 text-center">
           <div class="bg-docsis40/10 rounded-lg p-2 border border-docsis40/15"><div class="text-docsis40 font-display font-700 text-lg">10</div><div class="text-xs text-gray-500">Gbps Down</div></div>
           <div class="bg-docsis40/10 rounded-lg p-2 border border-docsis40/15"><div class="text-docsis40 font-display font-700 text-lg">6</div><div class="text-xs text-gray-500">Gbps Up</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="glossary" class="max-w-7xl mx-auto px-6 py-16">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl font-700 text-white mb-3">Glossary</h2>
+    <p class="text-gray-500 text-sm">Key terms and acronyms used throughout DOCSIS standards and this tool — hover underlined terms anywhere on the page for quick definitions</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+    <!-- FDX -->
+    <div class="rounded-2xl border border-docsis31p/20 bg-gray-900/60 backdrop-blur p-5 hover:border-docsis31p/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-docsis31p/20 text-docsis31p font-display font-700 text-sm shrink-0 mt-0.5">FDX</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Full Duplex DOCSIS</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Allows simultaneous upstream &amp; downstream transmission on the same frequencies using a <strong class="text-gray-300">Network Echo Canceller (NEC)</strong> at the node. Eliminates the need for a physical split upgrade — the upstream can reuse the 108–684 MHz band that FDD plants dedicate entirely to downstream.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FDD -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-5 hover:border-white/20 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-display font-700 text-sm shrink-0 mt-0.5">FDD</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Frequency Division Duplex</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Traditional cable broadband approach where upstream and downstream use <strong class="text-gray-300">separate, non-overlapping frequency bands</strong>. The split point (e.g. 85 MHz) is the hard boundary. Simple and robust — no echo cancellation required.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OFDM -->
+    <div class="rounded-2xl border border-neon/20 bg-gray-900/60 backdrop-blur p-5 hover:border-neon/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-neon/15 text-neon font-display font-700 text-sm shrink-0 mt-0.5">OFDM</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Orthogonal Frequency Division Multiplexing</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Downstream modulation method introduced in DOCSIS 3.1. Splits a wide channel (24, 96, or <strong class="text-gray-300">192 MHz</strong>) into thousands of closely-spaced subcarriers (25 or 50 kHz each). Supports up to <strong class="text-gray-300">4096-QAM</strong> and LDPC FEC, far exceeding legacy SC-QAM efficiency.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OFDMA -->
+    <div class="rounded-2xl border border-docsis31p/20 bg-gray-900/60 backdrop-blur p-5 hover:border-docsis31p/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-docsis31p/20 text-docsis31p font-display font-700 text-sm shrink-0 mt-0.5">OFDMA</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Orthogonal Frequency Division Multiple Access</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Upstream counterpart to OFDM. Multiple cable modems <strong class="text-gray-300">share subcarriers in both time and frequency</strong>, enabling flexible per-modem bandwidth grants. The CMTS schedules which modems transmit on which subcarriers each interval.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- A-TDMA -->
+    <div class="rounded-2xl border border-docsis31/20 bg-gray-900/60 backdrop-blur p-5 hover:border-docsis31/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-docsis31/20 text-docsis31 font-display font-700 text-sm shrink-0 mt-0.5">A-TDMA</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Advanced Time Division Multiple Access</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Legacy upstream access method since DOCSIS 2.0. Modems share <strong class="text-gray-300">6.4 MHz SC-QAM channels</strong> by transmitting in assigned time slots at 5.12 Msps. Still widely deployed alongside OFDMA for backward compatibility with older CPE.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SC-QAM -->
+    <div class="rounded-2xl border border-docsis31/20 bg-gray-900/60 backdrop-blur p-5 hover:border-docsis31/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-docsis31/20 text-docsis31 font-display font-700 text-sm shrink-0 mt-0.5">SC-QAM</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Single Carrier QAM</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Traditional DOCSIS modulation using a single 6 MHz carrier. Downstream supports up to <strong class="text-gray-300">256-QAM at 5.057 Msps</strong>. Used since DOCSIS 1.0 and still bonded alongside OFDM channels. Cannot use LDPC or high QAM orders — those require OFDM.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- QAM -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-5 hover:border-white/20 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-display font-700 text-sm shrink-0 mt-0.5">QAM</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Quadrature Amplitude Modulation</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Encodes data by simultaneously varying both <strong class="text-gray-300">amplitude and phase</strong> of a carrier. Higher orders pack more bits per symbol (4096-QAM = 12 bits/symbol) but require better signal quality (higher SNR). The order is always a power of 2.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LDPC -->
+    <div class="rounded-2xl border border-docsis40/20 bg-gray-900/60 backdrop-blur p-5 hover:border-docsis40/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-docsis40/20 text-docsis40 font-display font-700 text-sm shrink-0 mt-0.5">LDPC</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Low-Density Parity-Check</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Forward error correction (FEC) code used in DOCSIS 3.1+. Provides <strong class="text-gray-300">near-Shannon-limit performance</strong>. The max coding rate is 0.94, meaning 94% of transmitted bits carry data and 6% are FEC overhead. SC-QAM uses simpler Reed-Solomon FEC.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- HFC -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-5 hover:border-white/20 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-display font-700 text-sm shrink-0 mt-0.5">HFC</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Hybrid Fiber-Coaxial</div>
+          <p class="text-gray-500 text-xs leading-relaxed">The cable network infrastructure: <strong class="text-gray-300">optical fiber</strong> from headend to neighborhood nodes, then <strong class="text-gray-300">coaxial cable</strong> for the last mile to subscribers. The node is where the optical signal converts to RF on coax — and where FDX echo cancellers are installed.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESD -->
+    <div class="rounded-2xl border border-docsis40/20 bg-gray-900/60 backdrop-blur p-5 hover:border-docsis40/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-docsis40/20 text-docsis40 font-display font-700 text-sm shrink-0 mt-0.5">ESD</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Extended Spectrum DOCSIS</div>
+          <p class="text-gray-500 text-xs leading-relaxed">DOCSIS 4.0 feature extending upstream to <strong class="text-gray-300">684 MHz</strong> via a high split, and downstream to 1794 MHz. Achieves 6 Gbps upstream through additional spectrum rather than echo cancellation. Requires amplifier and tap upgrades but not full fiber deep.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CMTS -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-5 hover:border-white/20 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-display font-700 text-sm shrink-0 mt-0.5">CMTS</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Cable Modem Termination System</div>
+          <p class="text-gray-500 text-xs leading-relaxed">The headend equipment that manages all cable modems on the plant. Schedules upstream <strong class="text-gray-300">time slots and subcarrier grants</strong>, bridges between the HFC plant and IP backbone, and enforces QoS policies. Modern CMTS units handle OFDM/OFDMA alongside SC-QAM.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Split -->
+    <div class="rounded-2xl border border-neon/20 bg-gray-900/60 backdrop-blur p-5 hover:border-neon/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-neon/15 text-neon font-display font-700 text-sm shrink-0 mt-0.5">Split</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Return Path Split Point</div>
+          <p class="text-gray-500 text-xs leading-relaxed">The frequency boundary dividing upstream from downstream spectrum. Common splits: <strong class="text-gray-300">Low (85 MHz) · Mid (204 MHz) · High (300 MHz) · ESD (684 MHz)</strong>. Higher splits allocate more spectrum to upstream but require replacing diplex filters in every amplifier and tap on the coax plant.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Channel Bonding -->
+    <div class="rounded-2xl border border-yellow-500/20 bg-gray-900/60 backdrop-blur p-5 hover:border-yellow-500/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-yellow-500/15 text-yellow-400 font-display font-700 text-sm shrink-0 mt-0.5">Bonding</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Channel Bonding</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Combining multiple independent channels into one logical pipe to increase aggregate throughput. DOCSIS 3.0 introduced bonding — up to <strong class="text-gray-300">32 DS / 8 US SC-QAM channels</strong>. DOCSIS 3.1 replaces many bonded SC-QAM channels with a single wide OFDM channel.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Symbol Rate -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-5 hover:border-white/20 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-display font-700 text-sm shrink-0 mt-0.5">Msps</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Symbol Rate (Mega-symbols/sec)</div>
+          <p class="text-gray-500 text-xs leading-relaxed">How fast the modulator changes state. Capacity = Symbol Rate × bits/symbol × coding rate. For OFDM, the symbol rate equals the subcarrier spacing (e.g. <strong class="text-gray-300">25 kHz × 7,040 active subcarriers</strong>). For SC-QAM DS: 5.057 Msps; US A-TDMA: 5.12 Msps.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PNM -->
+    <div class="rounded-2xl border border-docsis40/20 bg-gray-900/60 backdrop-blur p-5 hover:border-docsis40/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-docsis40/20 text-docsis40 font-display font-700 text-sm shrink-0 mt-0.5">PNM</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Proactive Network Management</div>
+          <p class="text-gray-500 text-xs leading-relaxed">DOCSIS 3.1/4.0 suite of tools for real-time plant monitoring: <strong class="text-gray-300">spectrum analysis, impulse noise detection, pre-equalization data, and topology mapping</strong>. Allows operators to identify and fix plant impairments before customers notice degraded service.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MULPI -->
+    <div class="rounded-2xl border border-docsis31/20 bg-gray-900/60 backdrop-blur p-5 hover:border-docsis31/40 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-docsis31/20 text-docsis31 font-display font-700 text-sm shrink-0 mt-0.5">MULPI</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">MAC and Upper Layer Protocols Interface</div>
+          <p class="text-gray-500 text-xs leading-relaxed">The CableLabs specification document that defines the DOCSIS MAC layer. The <strong class="text-gray-300">D3.1 MULPI spec</strong> is the authoritative source for rules like "max 2 downstream OFDM channels per cable modem" and upstream OFDMA grant scheduling.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CableLabs -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-5 hover:border-white/20 transition-all">
+      <div class="flex items-start gap-3">
+        <div class="px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-display font-700 text-sm shrink-0 mt-0.5">CableLabs</div>
+        <div>
+          <div class="text-white font-semibold text-sm mb-1">Cable Television Laboratories</div>
+          <p class="text-gray-500 text-xs leading-relaxed">Non-profit R&amp;D consortium that develops and maintains DOCSIS, PacketCable, and other cable broadband specifications. Member operators (Comcast, Charter, Cox, etc.) fund the research. All DOCSIS specs are freely downloadable from <strong class="text-gray-300">cablelabs.com</strong>.</p>
         </div>
       </div>
     </div>
