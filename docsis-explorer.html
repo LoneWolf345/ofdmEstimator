@@ -315,6 +315,12 @@ tailwind = { config: { theme: { extend: {
         <div class="flex justify-between text-xs text-gray-600 mt-2">
           <span>16</span><span>64</span><span>256</span><span>1024</span><span>2048</span><span>4096</span>
         </div>
+        <!-- DOCSIS version zone bar -->
+        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
+          <div class="flex items-center justify-center text-docsis31 border-r border-black/20" style="width:50%;background:rgba(59,130,246,0.15)">SC-QAM · D3.0+</div>
+          <div class="flex items-center justify-center text-neon" style="width:50%;background:rgba(0,212,255,0.10)">OFDM · D3.1+</div>
+        </div>
+        <p class="text-xs text-gray-600 mt-1">256-QAM is the SC-QAM ceiling; 1024–4096-QAM requires OFDM (D3.1+)</p>
       </div>
 
       <!-- Coding Rate -->
@@ -323,24 +329,31 @@ tailwind = { config: { theme: { extend: {
           <label class="text-sm font-semibold text-gray-300">Coding Rate</label>
           <span id="cr-label" class="text-docsis40 font-display font-700 text-lg">0.94</span>
         </div>
-        <input type="range" id="cr-slider" class="w-full slider-40" min="50" max="97" step="1" value="94"
-               oninput="updateCalc()" style="--val:88%">
+        <input type="range" id="cr-slider" class="w-full slider-40" min="50" max="94" step="1" value="94"
+               oninput="updateCalc()" style="--val:100%">
         <div class="flex justify-between text-xs text-gray-600 mt-2">
-          <span>0.50</span><span>0.75</span><span>0.94</span><span>0.97</span>
+          <span>0.50</span><span>0.75</span><span class="text-docsis40 font-semibold">0.94 ← LDPC max</span>
         </div>
+        <p class="text-xs text-gray-600 mt-1">0.94 is the DOCSIS 3.1 LDPC forward error correction ceiling</p>
       </div>
 
-      <!-- Bonded Channels -->
+      <!-- OFDM Channels -->
       <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
         <div class="flex items-center justify-between mb-3">
-          <label class="text-sm font-semibold text-gray-300">Bonded Channels</label>
-          <span id="ch-label" class="text-docsis31 font-display font-700 text-lg">8</span>
+          <label class="text-sm font-semibold text-gray-300">OFDM Channels</label>
+          <span id="ch-label" class="text-docsis31 font-display font-700 text-lg">2</span>
         </div>
-        <input type="range" id="ch-slider" class="w-full slider-31" min="1" max="32" step="1" value="8"
-               oninput="updateCalc()" style="--val:22%">
+        <input type="range" id="ch-slider" class="w-full slider-31" min="1" max="8" step="1" value="2"
+               oninput="updateCalc()" style="--val:14%">
         <div class="flex justify-between text-xs text-gray-600 mt-2">
-          <span>1</span><span>8</span><span>16</span><span>24</span><span>32</span>
+          <span>1</span><span>2</span><span>4</span><span>6</span><span>8</span>
         </div>
+        <!-- DOCSIS version zone bar -->
+        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
+          <div class="flex items-center justify-center text-docsis31 border-r border-black/20" style="width:25%;background:rgba(59,130,246,0.15)">D3.1 ≤2</div>
+          <div class="flex items-center justify-center text-docsis40" style="width:75%;background:rgba(16,185,129,0.12)">D4.0 ESD · 3–8 channels</div>
+        </div>
+        <p class="text-xs text-gray-600 mt-1">DOCSIS 3.1 spec: max 2 downstream OFDM channels per node. D3.0: SC-QAM only (0 OFDM).</p>
       </div>
 
     </div>
@@ -369,6 +382,12 @@ tailwind = { config: { theme: { extend: {
         </div>
       </div>
 
+      <!-- DOCSIS Compatibility Status -->
+      <div id="compat-card" class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <h4 class="font-display font-600 text-white mb-4 text-sm">DOCSIS Compatibility</h4>
+        <div id="compat-content"></div>
+      </div>
+
       <!-- Formula breakdown -->
       <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
         <h4 class="font-display font-600 text-white mb-4 text-sm">Capacity Formula Breakdown</h4>
@@ -380,10 +399,10 @@ tailwind = { config: { theme: { extend: {
           <div id="formula-Nsc"  class="text-docsis31">  N_sc  = <span>subcarriers per channel</span></div>
           <div id="formula-M"    class="text-neon">  M     = <span>QAM order</span></div>
           <div id="formula-Rc"   class="text-docsis40">  R_c   = <span>coding rate</span></div>
-          <div id="formula-fs"   class="text-docsis31p">  f_s   = <span>symbol rate (Hz)</span></div>
+          <div id="formula-fs"   class="text-docsis31p">  f_s   = <span>subcarrier spacing (= symbol rate per carrier)</span></div>
           <br>
-          <div class="text-gray-500 mb-1">Total (bonded):</div>
-          <div id="formula-total" class="text-white">  C_total = C &times; N_channels</div>
+          <div class="text-gray-500 mb-1">Total (OFDM channels):</div>
+          <div id="formula-total" class="text-white">  C_total = C &times; N_ofdm_channels</div>
         </div>
       </div>
 
@@ -755,7 +774,7 @@ let state = {
   spacing: 25,
   qamIdx: 5,          // 4096-QAM
   codingRate: 0.94,
-  channels: 8,
+  channels: 2,
 };
 
 /* ─────────────────────────────────────────
@@ -860,7 +879,7 @@ function updateCalc() {
   document.getElementById('formula-fs').innerHTML   =
     `  f_s   = <span>${(symbolRateHz/1e3).toFixed(0)} kHz subcarrier spacing</span>`;
   document.getElementById('formula-total').innerHTML =
-    `  C_total = ${fmt.val} ${fmt.unit} (${state.channels} bonded channels)`;
+    `  C_total = ${fmt.val} ${fmt.unit} (${state.channels} OFDM channels)`;
 
   // Comparison bars
   const standards = [
@@ -890,6 +909,54 @@ function updateCalc() {
         <span class="text-neon font-semibold text-sm w-16 text-right">${fmt.val} ${fmt.unit}</span>
       </div>`;
   }).join('');
+
+  // DOCSIS Compatibility status
+  const ch = state.channels;
+  const compatLevels = [
+    {
+      name: 'DOCSIS 3.0',
+      ok: false,
+      always: false,
+      note: 'SC-QAM only — no OFDM channels',
+      color: '#6b7280',
+    },
+    {
+      name: 'DOCSIS 3.1',
+      ok: ch <= 2,
+      note: ch <= 2 ? 'Max 2 downstream OFDM channels per node' : `${ch} channels exceeds spec (max 2)`,
+      color: '#3b82f6',
+    },
+    {
+      name: 'DOCSIS 3.1+ (FDX)',
+      ok: ch <= 2,
+      note: ch <= 2 ? 'Full Duplex addendum — same OFDM channel limit' : `${ch} channels exceeds spec (max 2)`,
+      color: '#a855f7',
+    },
+    {
+      name: 'DOCSIS 4.0 ESD',
+      ok: ch <= 6,
+      note: ch <= 2 ? 'Well within extended spectrum capability' : ch <= 6 ? 'Multi-node ESD aggregation required' : `${ch} channels exceeds realistic ESD capacity`,
+      color: '#10b981',
+    },
+  ];
+  const warnMsg = ch > 6
+    ? '⚠ Config exceeds all DOCSIS standards — hypothetical exploration only'
+    : ch > 2
+    ? '⚠ Requires DOCSIS 4.0 ESD; multi-node aggregation beyond single plant'
+    : '';
+  document.getElementById('compat-content').innerHTML =
+    compatLevels.map(c => `
+      <div class="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full shrink-0" style="background:${c.color}"></div>
+          <span class="text-sm font-medium" style="color:${c.ok === false && c.always === false ? '#6b7280' : c.ok ? c.color : '#6b7280'}">${c.name}</span>
+        </div>
+        <div class="text-right ml-4">
+          <span class="text-xs font-semibold" style="color:${c.name === 'DOCSIS 3.0' ? '#9ca3af' : c.ok ? '#4ade80' : '#f87171'}">${c.name === 'DOCSIS 3.0' ? '— N/A' : c.ok ? '✓ In spec' : '✗ Exceeds spec'}</span>
+          <div class="text-xs text-gray-600 mt-0.5">${c.note}</div>
+        </div>
+      </div>`).join('') +
+    (warnMsg ? `<p class="text-xs text-yellow-400 mt-3 pt-3 border-t border-white/5">${warnMsg}</p>` : '');
 
   applyBtnStyles();
 }
