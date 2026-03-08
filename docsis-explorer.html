@@ -59,6 +59,7 @@ tailwind = { config: { theme: { extend: {
     </span>
     <div class="hidden sm:flex items-center gap-6 text-sm text-gray-400">
       <a href="#metrics"    class="hover:text-white transition-colors">Metrics</a>
+      <a href="#history"    class="hover:text-white transition-colors">History</a>
       <a href="#calculator" class="hover:text-white transition-colors">Calculator</a>
       <a href="#charts"     class="hover:text-white transition-colors">Charts</a>
       <a href="#upstream-calc" class="hover:text-white transition-colors">Upstream</a>
@@ -234,6 +235,139 @@ tailwind = { config: { theme: { extend: {
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
+     DOCSIS HISTORY (legacy versions)
+═══════════════════════════════════════════════════════════ -->
+<section id="history" class="max-w-7xl mx-auto px-6 pb-8">
+  <div class="text-center mb-10">
+    <h2 class="font-display text-3xl font-700 text-white mb-3">DOCSIS Evolution</h2>
+    <p class="text-gray-500 text-sm">The legacy generations that built modern cable broadband — from 28 Mbps to gigabits</p>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <!-- DOCSIS 1.0 -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-5 hover:border-white/20 transition-all">
+      <div class="h-1.5 rounded-full mb-4" style="background:linear-gradient(90deg,#6b7280,#9ca3af)"></div>
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 bg-white/5">
+          <span class="font-display font-700 text-gray-400 text-xs">1.0</span>
+        </div>
+        <div>
+          <div class="font-display font-700 text-white text-sm">DOCSIS 1.0</div>
+          <div class="text-xs text-gray-600">1997</div>
+        </div>
+      </div>
+      <div class="space-y-2 mb-3">
+        <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+          <div class="text-xs text-gray-500 mb-0.5">Downstream</div>
+          <div class="text-base font-display font-700 text-gray-300">27 <span class="text-sm">Mbps</span></div>
+          <div class="text-xs text-gray-600">1× 6 MHz · 64-QAM</div>
+        </div>
+        <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+          <div class="text-xs text-gray-500 mb-0.5">Upstream</div>
+          <div class="text-base font-display font-700 text-gray-300">10 <span class="text-sm">Mbps</span></div>
+          <div class="text-xs text-gray-600">TDMA · 16-QAM</div>
+        </div>
+      </div>
+      <div class="text-xs text-gray-600 border-t border-white/5 pt-2">Single channel · No bonding</div>
+    </div>
+
+    <!-- DOCSIS 1.1 -->
+    <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-5 hover:border-white/20 transition-all">
+      <div class="h-1.5 rounded-full mb-4" style="background:linear-gradient(90deg,#78716c,#a8a29e)"></div>
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 bg-white/5">
+          <span class="font-display font-700 text-gray-400 text-xs">1.1</span>
+        </div>
+        <div>
+          <div class="font-display font-700 text-white text-sm">DOCSIS 1.1</div>
+          <div class="text-xs text-gray-600">2001</div>
+        </div>
+      </div>
+      <div class="space-y-2 mb-3">
+        <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+          <div class="text-xs text-gray-500 mb-0.5">Downstream</div>
+          <div class="text-base font-display font-700 text-gray-300">38 <span class="text-sm">Mbps</span></div>
+          <div class="text-xs text-gray-600">1× 6 MHz · 256-QAM</div>
+        </div>
+        <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+          <div class="text-xs text-gray-500 mb-0.5">Upstream</div>
+          <div class="text-base font-display font-700 text-gray-300">10 <span class="text-sm">Mbps</span></div>
+          <div class="text-xs text-gray-600">TDMA · 64-QAM</div>
+        </div>
+      </div>
+      <div class="text-xs text-gray-600 border-t border-white/5 pt-2">Added 256-QAM DS · QoS support</div>
+    </div>
+
+    <!-- DOCSIS 2.0 -->
+    <div class="rounded-2xl border border-amber-500/20 bg-gray-900/60 backdrop-blur p-5 hover:border-amber-500/40 transition-all">
+      <div class="h-1.5 rounded-full mb-4" style="background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div>
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center border border-amber-500/20 bg-amber-500/10">
+          <span class="font-display font-700 text-amber-400 text-xs">2.0</span>
+        </div>
+        <div>
+          <div class="font-display font-700 text-white text-sm">DOCSIS 2.0</div>
+          <div class="text-xs text-gray-600">2001</div>
+        </div>
+      </div>
+      <div class="space-y-2 mb-3">
+        <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+          <div class="text-xs text-gray-500 mb-0.5">Downstream</div>
+          <div class="text-base font-display font-700 text-amber-400">38 <span class="text-sm">Mbps</span></div>
+          <div class="text-xs text-gray-600">1× 6 MHz · 256-QAM</div>
+        </div>
+        <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+          <div class="text-xs text-gray-500 mb-0.5">Upstream</div>
+          <div class="text-base font-display font-700 text-amber-400">30 <span class="text-sm">Mbps</span></div>
+          <div class="text-xs text-gray-600">A-TDMA · 64-QAM · 6.4 MHz</div>
+        </div>
+      </div>
+      <div class="text-xs text-gray-600 border-t border-amber-500/10 pt-2">A-TDMA &amp; S-CDMA upstream leap</div>
+    </div>
+
+    <!-- DOCSIS 3.0 -->
+    <div class="rounded-2xl border border-yellow-500/20 bg-gray-900/60 backdrop-blur p-5 hover:border-yellow-500/40 transition-all">
+      <div class="h-1.5 rounded-full mb-4" style="background:linear-gradient(90deg,#eab308,#facc15)"></div>
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center border border-yellow-500/20 bg-yellow-500/10">
+          <span class="font-display font-700 text-yellow-400 text-xs">3.0</span>
+        </div>
+        <div>
+          <div class="font-display font-700 text-white text-sm">DOCSIS 3.0</div>
+          <div class="text-xs text-gray-600">2006</div>
+        </div>
+      </div>
+      <div class="space-y-2 mb-3">
+        <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+          <div class="text-xs text-gray-500 mb-0.5">Downstream (Max)</div>
+          <div class="text-base font-display font-700 text-yellow-400">1.2 <span class="text-sm">Gbps</span></div>
+          <div class="text-xs text-gray-600">32× 6 MHz · 256-QAM bonded</div>
+        </div>
+        <div class="bg-black/30 rounded-lg p-2 border border-white/5">
+          <div class="text-xs text-gray-500 mb-0.5">Upstream (Max)</div>
+          <div class="text-base font-display font-700 text-yellow-400">200 <span class="text-sm">Mbps</span></div>
+          <div class="text-xs text-gray-600">8× A-TDMA · 64-QAM bonded</div>
+        </div>
+      </div>
+      <div class="text-xs text-gray-600 border-t border-yellow-500/10 pt-2">Channel bonding · IPv6 · MDD</div>
+    </div>
+
+  </div>
+
+  <!-- Evolution arrow / transition note -->
+  <div class="mt-6 flex items-center justify-center gap-3 text-xs text-gray-600">
+    <span class="px-2 py-1 rounded border border-white/10 bg-white/5 text-gray-500">D1.0 · 27 Mbps</span>
+    <span>→</span>
+    <span class="px-2 py-1 rounded border border-white/10 bg-white/5 text-gray-500">D3.0 · 1.2 Gbps</span>
+    <span>→</span>
+    <span class="px-2 py-1 rounded border border-docsis31/30 bg-docsis31/10 text-docsis31">D3.1 · 10 Gbps</span>
+    <span>→</span>
+    <span class="px-2 py-1 rounded border border-docsis40/30 bg-docsis40/10 text-docsis40">D4.0 · 10 Gbps↓ / 6 Gbps↑</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
      CHARTS
 ═══════════════════════════════════════════════════════════ -->
 <section id="charts" class="max-w-7xl mx-auto px-6 py-16">
@@ -405,7 +539,7 @@ tailwind = { config: { theme: { extend: {
         <!-- DS Spectrum utilization bar -->
         <div class="mb-5">
           <div class="flex justify-between text-xs text-gray-500 mb-1">
-            <span>DS Spectrum (1133 MHz: 85–1218 MHz)</span>
+            <span id="r-ds-band-label">DS Spectrum (85–1218 MHz = 1133 MHz)</span>
             <span id="r-spec-pct" class="text-gray-400">—</span>
           </div>
           <div class="h-5 bg-gray-800 rounded-full overflow-hidden flex">
@@ -476,6 +610,59 @@ tailwind = { config: { theme: { extend: {
   <div class="text-center mb-12">
     <h2 class="font-display text-3xl font-700 text-white mb-3">Upstream Configuration</h2>
     <p class="text-gray-500 text-sm">Mix A-TDMA (legacy SC-QAM) and OFDMA upstream channels — trade spectrum for capacity</p>
+  </div>
+
+  <!-- RF Plant Configuration — shared between DS and US calculators -->
+  <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6 mb-8">
+    <h3 class="font-display font-600 text-white mb-5 text-sm uppercase tracking-wider">RF Plant Configuration</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <!-- Split type -->
+      <div>
+        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Upstream Split Type</label>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="setSplitType('low')"  id="split-low"  class="split-btn px-3 py-2 rounded-lg text-xs font-semibold border transition-all text-left">
+            Low-split<br><span class="font-normal text-gray-500">5–85 MHz US</span>
+          </button>
+          <button onclick="setSplitType('mid')"  id="split-mid"  class="split-btn px-3 py-2 rounded-lg text-xs font-semibold border transition-all text-left">
+            Mid-split<br><span class="font-normal text-gray-500">5–204 MHz US</span>
+          </button>
+          <button onclick="setSplitType('high')" id="split-high" class="split-btn px-3 py-2 rounded-lg text-xs font-semibold border transition-all text-left">
+            High-split<br><span class="font-normal text-gray-500">5–300 MHz US</span>
+          </button>
+          <button onclick="setSplitType('esd')"  id="split-esd"  class="split-btn px-3 py-2 rounded-lg text-xs font-semibold border transition-all text-left">
+            ESD<br><span class="font-normal text-gray-500">5–684 MHz US</span>
+          </button>
+        </div>
+      </div>
+      <!-- Max DS frequency -->
+      <div>
+        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Max Downstream Frequency</label>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="setMaxFreq(1002)" id="freq-1002" class="freq-btn px-3 py-2 rounded-lg text-xs font-semibold border transition-all text-left">
+            1002 MHz<br><span class="font-normal text-gray-500">Legacy plant</span>
+          </button>
+          <button onclick="setMaxFreq(1218)" id="freq-1218" class="freq-btn px-3 py-2 rounded-lg text-xs font-semibold border transition-all text-left">
+            1218 MHz<br><span class="font-normal text-gray-500">DOCSIS 3.1</span>
+          </button>
+          <button onclick="setMaxFreq(1794)" id="freq-1794" class="freq-btn px-3 py-2 rounded-lg text-xs font-semibold border transition-all text-left">
+            1794 MHz<br><span class="font-normal text-gray-500">DOCSIS 4.0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Live band summary -->
+    <div class="grid grid-cols-2 gap-4 mt-5">
+      <div class="bg-black/30 rounded-xl p-3 border border-neon/15 text-center">
+        <div class="text-xs text-gray-500 mb-1">Downstream Band</div>
+        <div id="plant-ds-band" class="font-display font-700 text-neon text-sm">85–1218 MHz</div>
+        <div id="plant-ds-mhz"  class="text-xs text-gray-500 mt-0.5">1133 MHz available</div>
+      </div>
+      <div class="bg-black/30 rounded-xl p-3 border border-docsis31p/15 text-center">
+        <div class="text-xs text-gray-500 mb-1">Upstream Band</div>
+        <div id="plant-us-band" class="font-display font-700 text-docsis31p text-sm">5–85 MHz</div>
+        <div id="plant-us-mhz"  class="text-xs text-gray-500 mt-0.5">80 MHz available</div>
+      </div>
+    </div>
   </div>
 
   <div class="grid grid-cols-1 xl:grid-cols-5 gap-8">
@@ -934,17 +1121,31 @@ tailwind = { config: { theme: { extend: {
 const QAM_ORDERS  = [16, 64, 256, 1024, 2048, 4096];
 const CODING_RATE_DEFAULT = 0.94;
 
-// DS spectrum available for DOCSIS 3.1 (85–1218 MHz)
-const DS_BAND_MHZ = 1133;
-// US spectrum for DOCSIS 3.1 low-split (5–85 MHz)
-const US_BAND_MHZ = 80;
-
 // DS SC-QAM: 6 MHz Annex B channel, 5.057 Msps (CableLabs spec)
 const SCQAM_DS_SYMRATE = 5.057e6;
 // US A-TDMA: 6.4 MHz channel, 5.12 Msps
 const ATDMA_SYMRATE    = 5.12e6;
 const ATDMA_CH_MHZ     = 6.4;
 const CODING_RATE_SCQAM = 0.94;
+
+// RF Plant split configurations: upstream cutoff MHz
+const SPLITS = {
+  low:  { name: 'Low-split',     usMax:  85, docsis: 'D3.0 / D3.1'       },
+  mid:  { name: 'Mid-split',     usMax: 204, docsis: 'D3.1 mid-split'     },
+  high: { name: 'High-split',    usMax: 300, docsis: 'D3.1 high-split'    },
+  esd:  { name: 'Ext. Spectrum', usMax: 684, docsis: 'D4.0 ESD'           },
+};
+const MAX_FREQS = [1002, 1218, 1794];
+
+function getUSBandMhz() {
+  return (SPLITS[state.splitType] || SPLITS.low).usMax - 5;
+}
+function getDSBandMhz() {
+  return state.maxDsFreq - (SPLITS[state.splitType] || SPLITS.low).usMax;
+}
+function getSplitUsMax() {
+  return (SPLITS[state.splitType] || SPLITS.low).usMax;
+}
 
 function calcSCQAMDS(channels, qam) {
   return channels * Math.log2(qam) * CODING_RATE_SCQAM * SCQAM_DS_SYMRATE;
@@ -982,6 +1183,8 @@ let state = {
   atdmaQam: 64,
   ofdmaChannels: 1,
   ofdmaWidth: 96,
+  splitType: 'low',
+  maxDsFreq: 1218,
 };
 
 /* ─────────────────────────────────────────
@@ -1035,6 +1238,33 @@ function setOFDMAWidth(w) {
   document.querySelectorAll('.ofdma-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('ofdma-' + w).classList.add('active');
   updateUpstream();
+}
+function setSplitType(s) {
+  state.splitType = s;
+  document.querySelectorAll('.split-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('split-' + s).classList.add('active');
+  applyPlantBtnStyles();
+  updatePlantDisplay();
+  updateCalc();
+}
+function setMaxFreq(f) {
+  state.maxDsFreq = f;
+  document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('freq-' + f).classList.add('active');
+  applyPlantBtnStyles();
+  updatePlantDisplay();
+  updateCalc();
+}
+function updatePlantDisplay() {
+  const sp  = SPLITS[state.splitType] || SPLITS.low;
+  const usB = getUSBandMhz();
+  const dsB = getDSBandMhz();
+  document.getElementById('plant-us-band').textContent = `5–${sp.usMax} MHz`;
+  document.getElementById('plant-us-mhz').textContent  = `${usB} MHz available`;
+  document.getElementById('plant-ds-band').textContent = `${sp.usMax}–${state.maxDsFreq} MHz`;
+  document.getElementById('plant-ds-mhz').textContent  = `${dsB} MHz available`;
+  const usBandLbl = document.getElementById('us-band-label');
+  if (usBandLbl) usBandLbl.textContent = `US Spectrum (${sp.name}: ${usB} MHz)`;
 }
 
 /* ─── Button styles ─── */
@@ -1100,22 +1330,28 @@ function updateCalc() {
   document.getElementById('r-ofdm').textContent      = `${fmtOFDM.val} ${fmtOFDM.unit}`;
   document.getElementById('r-scqam').textContent     = `${fmtSCQAM.val} ${fmtSCQAM.unit}`;
 
-  // DS spectrum utilization (1133 MHz = 85–1218 MHz)
+  // DS spectrum utilization — dynamic from plant split/max-freq config
+  const dsBandMhz = getDSBandMhz();
+  const sp        = SPLITS[state.splitType] || SPLITS.low;
   const ofdmMhz   = state.channels * state.channelWidth;
   const scqamMhz  = state.scqamChannels * 6;
   const totalMhz  = ofdmMhz + scqamMhz;
-  const ofdmPct   = Math.min((ofdmMhz  / DS_BAND_MHZ) * 100, 100);
-  const scqamPct  = Math.min((scqamMhz / DS_BAND_MHZ) * 100, 100 - ofdmPct);
+  const ofdmPct   = Math.min((ofdmMhz  / dsBandMhz) * 100, 100);
+  const scqamPct  = Math.min((scqamMhz / dsBandMhz) * 100, 100 - ofdmPct);
   document.getElementById('r-spec-ofdm').style.width  = `${ofdmPct.toFixed(1)}%`;
   document.getElementById('r-spec-scqam').style.width = `${scqamPct.toFixed(1)}%`;
-  document.getElementById('r-spec-pct').textContent   = `${Math.min((totalMhz/DS_BAND_MHZ)*100,100).toFixed(0)}% used`;
   document.getElementById('r-spec-ofdm-mhz').textContent  = `${ofdmMhz} MHz`;
   document.getElementById('r-spec-scqam-mhz').textContent = `${scqamMhz} MHz`;
-  if (totalMhz > DS_BAND_MHZ) {
-    document.getElementById('r-spec-pct').textContent = `⚠ ${totalMhz} MHz exceeds 1133 MHz DS band`;
-    document.getElementById('r-spec-pct').style.color = '#f87171';
+  const dsPctEl = document.getElementById('r-spec-pct');
+  // Update band label
+  const dsBandLbl = document.getElementById('r-ds-band-label');
+  if (dsBandLbl) dsBandLbl.textContent = `DS Spectrum (${sp.usMax}–${state.maxDsFreq} MHz = ${dsBandMhz} MHz)`;
+  if (totalMhz > dsBandMhz) {
+    dsPctEl.textContent = `⚠ ${totalMhz} MHz exceeds ${dsBandMhz} MHz DS band`;
+    dsPctEl.style.color = '#f87171';
   } else {
-    document.getElementById('r-spec-pct').style.color = '';
+    dsPctEl.textContent = `${Math.min((totalMhz/dsBandMhz)*100,100).toFixed(0)}% used`;
+    dsPctEl.style.color = '';
   }
 
   document.getElementById('r-subcarriers').textContent = (cfg.active * state.channels).toLocaleString();
@@ -1247,20 +1483,25 @@ function updateUpstream() {
   document.getElementById('r-ofdma').textContent   = `${fmtOFDMA.val} ${fmtOFDMA.unit}`;
   document.getElementById('r-atdma').textContent   = `${fmtATDMA.val} ${fmtATDMA.unit}`;
 
-  // Upstream spectrum bar (D3.1 low-split: 80 MHz)
-  const atdmaMhz = state.atdmaChannels * ATDMA_CH_MHZ;
-  const ofdmaMhz = state.ofdmaChannels * state.ofdmaWidth;
+  // Upstream spectrum bar — dynamic from plant split config
+  const usBandMhz = getUSBandMhz();
+  const sp2 = SPLITS[state.splitType] || SPLITS.low;
+  const atdmaMhz   = state.atdmaChannels * ATDMA_CH_MHZ;
+  const ofdmaMhz   = state.ofdmaChannels * state.ofdmaWidth;
   const totalUsMhz = atdmaMhz + ofdmaMhz;
-  const ofdmaPct = Math.min((ofdmaMhz / US_BAND_MHZ) * 100, 100);
-  const atdmaPct = Math.min((atdmaMhz / US_BAND_MHZ) * 100, 100 - ofdmaPct);
+  const ofdmaPct   = Math.min((ofdmaMhz / usBandMhz) * 100, 100);
+  const atdmaPct   = Math.min((atdmaMhz / usBandMhz) * 100, 100 - ofdmaPct);
 
   document.getElementById('r-spec-ofdma').style.width = `${ofdmaPct.toFixed(1)}%`;
   document.getElementById('r-spec-atdma').style.width = `${atdmaPct.toFixed(1)}%`;
 
-  const usedPct = Math.min((totalUsMhz / US_BAND_MHZ) * 100, 100);
+  const usBandLbl = document.getElementById('us-band-label');
+  if (usBandLbl) usBandLbl.textContent = `US Spectrum (${sp2.name}: 5–${sp2.usMax} MHz = ${usBandMhz} MHz)`;
+
+  const usedPct = Math.min((totalUsMhz / usBandMhz) * 100, 100);
   const usPctEl = document.getElementById('r-us-pct');
-  if (totalUsMhz > US_BAND_MHZ) {
-    usPctEl.textContent = `⚠ ${totalUsMhz.toFixed(1)} MHz exceeds 80 MHz US band`;
+  if (totalUsMhz > usBandMhz) {
+    usPctEl.textContent = `⚠ ${totalUsMhz.toFixed(1)} MHz exceeds ${usBandMhz} MHz US band`;
     usPctEl.style.color = '#f87171';
   } else {
     usPctEl.textContent = `${usedPct.toFixed(0)}% used (${totalUsMhz.toFixed(1)} MHz)`;
@@ -1334,6 +1575,29 @@ function applyMixedBtnStyles() {
   });
 }
 
+function applyPlantBtnStyles() {
+  // Split buttons (neon)
+  document.querySelectorAll('.split-btn').forEach(btn => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
+      btn.classList.add('border-neon/50','text-neon','bg-neon/10');
+    } else {
+      btn.classList.remove('border-neon/50','text-neon','bg-neon/10');
+      btn.classList.add('border-white/10','text-gray-400','bg-transparent');
+    }
+  });
+  // Frequency buttons (neon)
+  document.querySelectorAll('.freq-btn').forEach(btn => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
+      btn.classList.add('border-neon/50','text-neon','bg-neon/10');
+    } else {
+      btn.classList.remove('border-neon/50','text-neon','bg-neon/10');
+      btn.classList.add('border-white/10','text-gray-400','bg-transparent');
+    }
+  });
+}
+
 /* ─── OFDM Table ─── */
 function buildOFDMTable() {
   const tbody = document.getElementById('ofdm-table-body');
@@ -1376,12 +1640,14 @@ function buildOFDMTable() {
 function buildSpeedBars() {
   const container = document.getElementById('speedBars');
   const data = [
-    { label: 'DOCSIS 3.1  Downstream',  val: 10,   max: 10, color: '#3b82f6', bgColor: 'rgba(59,130,246,0.15)'  },
-    { label: 'DOCSIS 3.1  Upstream',    val: 1.5,  max: 10, color: '#3b82f6', bgColor: 'rgba(59,130,246,0.08)'  },
-    { label: 'DOCSIS 3.1+ Downstream',  val: 10,   max: 10, color: '#a855f7', bgColor: 'rgba(168,85,247,0.15)'  },
-    { label: 'DOCSIS 3.1+ Upstream',    val: 6,    max: 10, color: '#a855f7', bgColor: 'rgba(168,85,247,0.08)'  },
-    { label: 'DOCSIS 4.0  Downstream',  val: 10,   max: 10, color: '#10b981', bgColor: 'rgba(16,185,129,0.15)'  },
-    { label: 'DOCSIS 4.0  Upstream',    val: 6,    max: 10, color: '#10b981', bgColor: 'rgba(16,185,129,0.08)'  },
+    { label: 'DOCSIS 3.0  Downstream',  val: 1.2,  max: 10, color: '#eab308', bgColor: 'rgba(234,179,8,0.15)',  disp: '1.2 Gbps'  },
+    { label: 'DOCSIS 3.0  Upstream',    val: 0.2,  max: 10, color: '#eab308', bgColor: 'rgba(234,179,8,0.08)',  disp: '200 Mbps'  },
+    { label: 'DOCSIS 3.1  Downstream',  val: 10,   max: 10, color: '#3b82f6', bgColor: 'rgba(59,130,246,0.15)', disp: '10 Gbps'   },
+    { label: 'DOCSIS 3.1  Upstream',    val: 1.5,  max: 10, color: '#3b82f6', bgColor: 'rgba(59,130,246,0.08)', disp: '1.5 Gbps'  },
+    { label: 'DOCSIS 3.1+ Downstream',  val: 10,   max: 10, color: '#a855f7', bgColor: 'rgba(168,85,247,0.15)', disp: '10 Gbps'   },
+    { label: 'DOCSIS 3.1+ Upstream',    val: 6,    max: 10, color: '#a855f7', bgColor: 'rgba(168,85,247,0.08)', disp: '~6 Gbps'   },
+    { label: 'DOCSIS 4.0  Downstream',  val: 10,   max: 10, color: '#10b981', bgColor: 'rgba(16,185,129,0.15)', disp: '10 Gbps'   },
+    { label: 'DOCSIS 4.0  Upstream',    val: 6,    max: 10, color: '#10b981', bgColor: 'rgba(16,185,129,0.08)', disp: '6 Gbps'    },
   ];
   container.innerHTML = data.map(d => {
     const pct = (d.val / d.max * 100).toFixed(0);
@@ -1390,8 +1656,8 @@ function buildSpeedBars() {
         <div class="w-44 shrink-0 text-xs text-gray-400 font-medium font-mono">${d.label}</div>
         <div class="flex-1 h-6 rounded-lg overflow-hidden" style="background:${d.bgColor};">
           <div class="h-full rounded-lg flex items-center pl-3 text-xs font-semibold bar-animate"
-               style="width:${pct}%; background: linear-gradient(90deg, ${d.color}99, ${d.color}cc); color:white; min-width:3rem;">
-            ${d.val} Gbps
+               style="width:${Math.max(pct,2)}%; background: linear-gradient(90deg, ${d.color}99, ${d.color}cc); color:white; min-width:3.5rem;">
+            ${d.disp}
           </div>
         </div>
       </div>`;
@@ -1410,21 +1676,21 @@ function buildCharts() {
   new Chart(document.getElementById('barChart'), {
     type: 'bar',
     data: {
-      labels: ['DOCSIS 3.1', 'DOCSIS 3.1+', 'DOCSIS 4.0'],
+      labels: ['DOCSIS 3.0', 'DOCSIS 3.1', 'DOCSIS 3.1+', 'DOCSIS 4.0'],
       datasets: [
         {
           label: 'Downstream (Gbps)',
-          data: [10, 10, 10],
-          backgroundColor: ['rgba(59,130,246,0.7)', 'rgba(168,85,247,0.7)', 'rgba(16,185,129,0.7)'],
-          borderColor:      ['#3b82f6', '#a855f7', '#10b981'],
+          data: [1.2, 10, 10, 10],
+          backgroundColor: ['rgba(234,179,8,0.7)', 'rgba(59,130,246,0.7)', 'rgba(168,85,247,0.7)', 'rgba(16,185,129,0.7)'],
+          borderColor:      ['#eab308', '#3b82f6', '#a855f7', '#10b981'],
           borderWidth: 1.5,
           borderRadius: 6,
         },
         {
           label: 'Upstream (Gbps)',
-          data: [1.5, 6, 6],
-          backgroundColor: ['rgba(59,130,246,0.25)', 'rgba(168,85,247,0.25)', 'rgba(16,185,129,0.25)'],
-          borderColor:      ['#3b82f6', '#a855f7', '#10b981'],
+          data: [0.2, 1.5, 6, 6],
+          backgroundColor: ['rgba(234,179,8,0.25)', 'rgba(59,130,246,0.25)', 'rgba(168,85,247,0.25)', 'rgba(16,185,129,0.25)'],
+          borderColor:      ['#eab308', '#3b82f6', '#a855f7', '#10b981'],
           borderWidth: 1.5,
           borderRadius: 6,
           borderDash: [4,4],
@@ -1447,6 +1713,17 @@ function buildCharts() {
     data: {
       labels: ['Downstream', 'Upstream', 'Modulation', 'Spectrum Width', 'Duplex Flex', 'Future-Proof'],
       datasets: [
+        {
+          label: 'DOCSIS 3.0',
+          data: [1, 2, 5, 2, 2, 1],
+          fill: true,
+          backgroundColor: 'rgba(234,179,8,0.10)',
+          borderColor: '#eab308',
+          pointBackgroundColor: '#eab308',
+          pointRadius: 3,
+          borderWidth: 1.5,
+          borderDash: [4,4],
+        },
         {
           label: 'DOCSIS 3.1',
           data: [10, 2, 10, 5, 3, 5],
@@ -1499,10 +1776,14 @@ document.addEventListener('DOMContentLoaded', () => {
   buildCharts();
   buildOFDMTable();
   buildSpeedBars();
-  // Set default active states for new button groups
+  // Set default active states for button groups
   document.getElementById('scq-256').classList.add('active');
   document.getElementById('atdma-64').classList.add('active');
   document.getElementById('ofdma-96').classList.add('active');
+  document.getElementById('split-low').classList.add('active');
+  document.getElementById('freq-1218').classList.add('active');
+  updatePlantDisplay();
+  applyPlantBtnStyles();
   updateCalc();   // also calls updateUpstream() and applyMixedBtnStyles()
   applyBtnStyles();
 
