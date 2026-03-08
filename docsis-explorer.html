@@ -498,7 +498,44 @@ tailwind = { config: { theme: { extend: {
         <div class="flex-1 h-px bg-neon/30"></div>
       </div>
 
-      <!-- Channel Width -->
+      <!-- OFDM Channels — first -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-gray-300">OFDM Channels</label>
+          <span id="ch-label" class="text-docsis31 font-display font-700 text-lg">2</span>
+        </div>
+        <input type="range" id="ch-slider" class="w-full slider-31" min="0" max="8" step="1" value="2"
+               oninput="updateCalc()" style="--val:25%">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>0</span><span>1</span><span>2</span><span>4</span><span>6</span><span>8</span>
+        </div>
+        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
+          <div class="flex items-center justify-center text-gray-400 border-r border-black/20" style="width:12%;background:rgba(107,114,128,0.12)">D3.0: 0</div>
+          <div class="flex items-center justify-center text-docsis31 border-r border-black/20" style="width:25%;background:rgba(59,130,246,0.15)">D3.1 ≤2</div>
+          <div class="flex items-center justify-center text-docsis40" style="width:63%;background:rgba(16,185,129,0.12)">D4.0 ESD · 3–8 channels</div>
+        </div>
+        <p class="text-xs text-gray-600 mt-1">0 = SC-QAM only (D3.0 mode). MULPI spec: max 2 OFDM channels per node (D3.1).</p>
+      </div>
+
+      <!-- QAM Order — second -->
+      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-gray-300">OFDM Modulation (QAM)</label>
+          <span id="qam-label" class="text-neon font-display font-700 text-lg">4096</span>
+        </div>
+        <input type="range" id="qam-slider" class="w-full slider-neon" min="0" max="5" step="1" value="5"
+               oninput="updateCalc()" style="--val:100%">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>16</span><span>64</span><span>256</span><span>1024</span><span>2048</span><span>4096</span>
+        </div>
+        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
+          <div class="flex items-center justify-center text-docsis31 border-r border-black/20" style="width:50%;background:rgba(59,130,246,0.15)">SC-QAM · D3.0+ (≤256)</div>
+          <div class="flex items-center justify-center text-neon" style="width:50%;background:rgba(0,212,255,0.10)">OFDM · D3.1+ (up to 4096)</div>
+        </div>
+        <p class="text-xs text-gray-600 mt-1">256-QAM is the SC-QAM ceiling; 1024–4096-QAM requires OFDM (D3.1+)</p>
+      </div>
+
+      <!-- Channel Width — third -->
       <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
         <label class="block text-sm font-semibold text-gray-300 mb-4">OFDM Channel Width</label>
         <div class="flex gap-2 flex-wrap">
@@ -518,24 +555,6 @@ tailwind = { config: { theme: { extend: {
         <p class="text-xs text-gray-600 mt-3">25 kHz gives more subcarriers; 50 kHz is more robust to multipath</p>
       </div>
 
-      <!-- QAM Order -->
-      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
-        <div class="flex items-center justify-between mb-3">
-          <label class="text-sm font-semibold text-gray-300">OFDM Modulation (QAM)</label>
-          <span id="qam-label" class="text-neon font-display font-700 text-lg">4096</span>
-        </div>
-        <input type="range" id="qam-slider" class="w-full slider-neon" min="0" max="5" step="1" value="5"
-               oninput="updateCalc()" style="--val:100%">
-        <div class="flex justify-between text-xs text-gray-600 mt-2">
-          <span>16</span><span>64</span><span>256</span><span>1024</span><span>2048</span><span>4096</span>
-        </div>
-        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
-          <div class="flex items-center justify-center text-docsis31 border-r border-black/20" style="width:50%;background:rgba(59,130,246,0.15)">SC-QAM · D3.0+ (≤256)</div>
-          <div class="flex items-center justify-center text-neon" style="width:50%;background:rgba(0,212,255,0.10)">OFDM · D3.1+ (up to 4096)</div>
-        </div>
-        <p class="text-xs text-gray-600 mt-1">256-QAM is the SC-QAM ceiling; 1024–4096-QAM requires OFDM (D3.1+)</p>
-      </div>
-
       <!-- Coding Rate -->
       <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
         <div class="flex items-center justify-between mb-3">
@@ -548,24 +567,6 @@ tailwind = { config: { theme: { extend: {
           <span>0.50</span><span>0.75</span><span class="text-docsis40 font-semibold">0.94 ← LDPC max</span>
         </div>
         <p class="text-xs text-gray-600 mt-1">0.94 is the DOCSIS 3.1 LDPC forward error correction ceiling</p>
-      </div>
-
-      <!-- OFDM Channels -->
-      <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
-        <div class="flex items-center justify-between mb-3">
-          <label class="text-sm font-semibold text-gray-300">OFDM Channels</label>
-          <span id="ch-label" class="text-docsis31 font-display font-700 text-lg">2</span>
-        </div>
-        <input type="range" id="ch-slider" class="w-full slider-31" min="1" max="8" step="1" value="2"
-               oninput="updateCalc()" style="--val:14%">
-        <div class="flex justify-between text-xs text-gray-600 mt-2">
-          <span>1</span><span>2</span><span>4</span><span>6</span><span>8</span>
-        </div>
-        <div class="flex mt-3 rounded-lg overflow-hidden text-xs font-semibold h-6">
-          <div class="flex items-center justify-center text-docsis31 border-r border-black/20" style="width:25%;background:rgba(59,130,246,0.15)">D3.1 ≤2</div>
-          <div class="flex items-center justify-center text-docsis40" style="width:75%;background:rgba(16,185,129,0.12)">D4.0 ESD · 3–8 channels</div>
-        </div>
-        <p class="text-xs text-gray-600 mt-1">DOCSIS 3.1 MULPI spec: max 2 downstream OFDM channels per node.</p>
       </div>
 
     </div>
@@ -821,7 +822,7 @@ tailwind = { config: { theme: { extend: {
       <div id="sp-ds-ofdm"   class="h-full flex items-center justify-center text-xs font-semibold spectrum-seg" style="background:rgba(0,212,255,0.50);width:0%">
         <span id="sp-ds-ofdm-lbl" class="px-1 truncate text-white"></span>
       </div>
-      <div id="sp-ds-unused" class="h-full flex items-center justify-center text-xs spectrum-seg" style="background:rgba(255,255,255,0.04)">
+      <div id="sp-ds-unused" class="h-full flex items-center justify-center text-xs spectrum-seg" style="background:rgba(255,255,255,0.04);width:0%">
         <span class="text-gray-600 px-1 truncate">unused DS</span>
       </div>
     </div>
@@ -1382,7 +1383,7 @@ function updateSpectrumSummary(totalUsBps, atdmaBps, ofdmaBps, atdmaMhz, ofdmaMh
   document.getElementById('sp-us-unused').style.width = pct(usUnusedMhz);
   document.getElementById('sp-ds-scqam').style.width  = pct(dsScqamMhz);
   document.getElementById('sp-ds-ofdm').style.width   = pct(dsOfdmMhz);
-  // sp-ds-unused gets flex-1 so it fills the rest
+  document.getElementById('sp-ds-unused').style.width = pct(Math.max(0, dsUnused));
 
   // Labels (only show if wide enough)
   document.getElementById('sp-us-atdma-lbl').textContent  = usAtdmaMhz > 10 ? `A-TDMA ${usAtdmaMhz.toFixed(0)}MHz` : '';
