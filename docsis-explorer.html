@@ -716,7 +716,7 @@ tailwind = { config: { theme: { extend: {
           <label class="text-sm font-semibold text-gray-300">A-TDMA Channels</label>
           <span id="atdma-label" class="text-docsis31 font-display font-700 text-lg">8</span>
         </div>
-        <input type="range" id="atdma-slider" class="w-full slider-31" min="0" max="24" step="1" value="8"
+        <input type="range" id="atdma-slider" class="w-full slider-31" min="0" max="24" step="1" value="14"
                oninput="updateUpstream()" style="--val:33%">
         <div class="flex justify-between text-xs text-gray-600 mt-2">
           <span>0</span><span>6</span><span>12</span><span>18</span><span>24</span>
@@ -746,7 +746,7 @@ tailwind = { config: { theme: { extend: {
           <label class="text-sm font-semibold text-gray-300">OFDMA Channels</label>
           <span id="ofdma-label" class="text-docsis31p font-display font-700 text-lg">1</span>
         </div>
-        <input type="range" id="ofdma-slider" class="w-full slider-31p" min="0" max="4" step="1" value="1"
+        <input type="range" id="ofdma-slider" class="w-full slider-31p" min="0" max="4" step="1" value="2"
                oninput="updateUpstream()" style="--val:25%">
         <div class="flex justify-between text-xs text-gray-600 mt-2">
           <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
@@ -1392,9 +1392,9 @@ let state = {
   channels: 4,
   scqamChannels: 24,
   scqamQam: 256,
-  atdmaChannels: 8,
+  atdmaChannels: 14,
   atdmaQam: 64,
-  ofdmaChannels: 1,
+  ofdmaChannels: 2,
   ofdmaWidth: 96,
   splitType: 'high',
   maxDsFreq: 1218,
