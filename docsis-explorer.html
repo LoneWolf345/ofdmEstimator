@@ -443,17 +443,21 @@ tailwind = { config: { theme: { extend: {
       <div>
         <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Upstream Split Type</label>
         <div class="grid grid-cols-2 gap-3">
-          <button onclick="setSplitType('low')"  id="split-low"  class="split-btn px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
-            <div class="font-bold">Low-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–85 MHz US · D3.0/D3.1</div>
+          <button onclick="setSplitType('low')"  id="split-low"  class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#8a8c2a,#b0b240)"></div>
+            <div class="font-bold">Low-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–85 MHz US · DOCSIS 3.0</div>
           </button>
-          <button onclick="setSplitType('mid')"  id="split-mid"  class="split-btn px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
-            <div class="font-bold">Mid-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–204 MHz US · D3.1 mid</div>
+          <button onclick="setSplitType('mid')"  id="split-mid"  class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div>
+            <div class="font-bold">Mid-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–204 MHz US · DOCSIS 3.1</div>
           </button>
-          <button onclick="setSplitType('high')" id="split-high" class="split-btn px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
-            <div class="font-bold">High-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–300 MHz US · D3.1 high</div>
+          <button onclick="setSplitType('high')" id="split-high" class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#a855f7,#c084fc)"></div>
+            <div class="font-bold">High-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–300 MHz US · DOCSIS 3.1+</div>
           </button>
-          <button onclick="setSplitType('esd')"  id="split-esd"  class="split-btn px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
-            <div class="font-bold">ESD</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–684 MHz US · D4.0</div>
+          <button onclick="setSplitType('esd')"  id="split-esd"  class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#10b981,#34d399)"></div>
+            <div class="font-bold">ESD</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–684 MHz US · DOCSIS 4.0</div>
           </button>
         </div>
       </div>
@@ -461,13 +465,16 @@ tailwind = { config: { theme: { extend: {
       <div>
         <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Max Downstream Frequency</label>
         <div class="grid grid-cols-3 gap-3">
-          <button onclick="setMaxFreq(1002)" id="freq-1002" class="freq-btn px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
-            <div class="font-bold">1002 MHz</div><div class="font-normal text-xs text-gray-500 mt-0.5">Legacy plant</div>
+          <button onclick="setMaxFreq(1002)" id="freq-1002" class="freq-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#8a8c2a,#b0b240)"></div>
+            <div class="font-bold">1002 MHz</div><div class="font-normal text-xs text-gray-500 mt-0.5">DOCSIS 3.0</div>
           </button>
-          <button onclick="setMaxFreq(1218)" id="freq-1218" class="freq-btn px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+          <button onclick="setMaxFreq(1218)" id="freq-1218" class="freq-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div>
             <div class="font-bold">1218 MHz</div><div class="font-normal text-xs text-gray-500 mt-0.5">DOCSIS 3.1</div>
           </button>
-          <button onclick="setMaxFreq(1794)" id="freq-1794" class="freq-btn px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+          <button onclick="setMaxFreq(1794)" id="freq-1794" class="freq-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#10b981,#34d399)"></div>
             <div class="font-bold">1794 MHz</div><div class="font-normal text-xs text-gray-500 mt-0.5">DOCSIS 4.0</div>
           </button>
         </div>
@@ -1795,21 +1802,27 @@ function applyMixedBtnStyles() {
 }
 
 function applyPlantBtnStyles() {
-  document.querySelectorAll('.split-btn').forEach(btn => {
+  const btnColors = {
+    'split-low':  ['border-docsis30/50','text-docsis30','bg-docsis30/10'],
+    'split-mid':  ['border-docsis31/50','text-docsis31','bg-docsis31/10'],
+    'split-high': ['border-docsis31p/50','text-docsis31p','bg-docsis31p/10'],
+    'split-esd':  ['border-docsis40/50','text-docsis40','bg-docsis40/10'],
+    'freq-1002':  ['border-docsis30/50','text-docsis30','bg-docsis30/10'],
+    'freq-1218':  ['border-docsis31/50','text-docsis31','bg-docsis31/10'],
+    'freq-1794':  ['border-docsis40/50','text-docsis40','bg-docsis40/10'],
+  };
+  const allActiveClasses = [
+    'border-neon/50','text-neon','bg-neon/10',
+    'border-docsis30/50','text-docsis30','bg-docsis30/10',
+    'border-docsis31/50','text-docsis31','bg-docsis31/10',
+    'border-docsis31p/50','text-docsis31p','bg-docsis31p/10',
+    'border-docsis40/50','text-docsis40','bg-docsis40/10',
+  ];
+  [...document.querySelectorAll('.split-btn'), ...document.querySelectorAll('.freq-btn')].forEach(btn => {
+    btn.classList.remove(...allActiveClasses, 'border-white/10', 'text-gray-400', 'bg-transparent');
     if (btn.classList.contains('active')) {
-      btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
-      btn.classList.add('border-neon/50','text-neon','bg-neon/10');
+      btn.classList.add(...(btnColors[btn.id] ?? ['border-neon/50','text-neon','bg-neon/10']));
     } else {
-      btn.classList.remove('border-neon/50','text-neon','bg-neon/10');
-      btn.classList.add('border-white/10','text-gray-400','bg-transparent');
-    }
-  });
-  document.querySelectorAll('.freq-btn').forEach(btn => {
-    if (btn.classList.contains('active')) {
-      btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
-      btn.classList.add('border-neon/50','text-neon','bg-neon/10');
-    } else {
-      btn.classList.remove('border-neon/50','text-neon','bg-neon/10');
       btn.classList.add('border-white/10','text-gray-400','bg-transparent');
     }
   });
