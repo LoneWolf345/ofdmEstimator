@@ -445,22 +445,30 @@ tailwind = { config: { theme: { extend: {
       <!-- Split type -->
       <div>
         <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Upstream Split Type</label>
-        <div class="grid grid-cols-2 gap-3">
-          <button onclick="setSplitType('low')"  id="split-low"  class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+        <div class="grid grid-cols-3 gap-3">
+          <button onclick="setSplitType('low')"    id="split-low"    class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
             <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#8a8c2a,#b0b240)"></div>
-            <div class="font-bold">Low-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–85 MHz US · DOCSIS 3.0</div>
+            <div class="font-bold">Sub/Low-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–42 MHz US · DOCSIS 3.0</div>
           </button>
-          <button onclick="setSplitType('mid')"  id="split-mid"  class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+          <button onclick="setSplitType('mid')"    id="split-mid"    class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
             <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div>
-            <div class="font-bold">Mid-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–204 MHz US · DOCSIS 3.1</div>
+            <div class="font-bold">Mid-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–85 MHz US · DOCSIS 3.1</div>
           </button>
-          <button onclick="setSplitType('high')" id="split-high" class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+          <button onclick="setSplitType('high')"   id="split-high"   class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
             <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#a855f7,#c084fc)"></div>
-            <div class="font-bold">High-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–300 MHz US · DOCSIS 3.1+</div>
+            <div class="font-bold">High-split</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–204 MHz US · DOCSIS 3.1+</div>
           </button>
-          <button onclick="setSplitType('esd')"  id="split-esd"  class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+          <button onclick="setSplitType('uhs')"    id="split-uhs"    class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
             <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#10b981,#34d399)"></div>
-            <div class="font-bold">ESD</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–684 MHz US · DOCSIS 4.0</div>
+            <div class="font-bold">Ultra-High</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–396 MHz US · DOCSIS 4.0</div>
+          </button>
+          <button onclick="setSplitType('esd492')" id="split-esd492" class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#10b981,#34d399)"></div>
+            <div class="font-bold">ESD 492</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–492 MHz US · DOCSIS 4.0</div>
+          </button>
+          <button onclick="setSplitType('esd684')" id="split-esd684" class="split-btn relative overflow-hidden px-4 py-3 rounded-xl text-sm font-semibold border transition-all text-left">
+            <div class="h-1 w-full absolute top-0 left-0" style="background:linear-gradient(90deg,#10b981,#34d399)"></div>
+            <div class="font-bold">ESD 684</div><div class="font-normal text-xs text-gray-500 mt-0.5">5–684 MHz US · DOCSIS 4.0</div>
           </button>
         </div>
       </div>
@@ -587,11 +595,15 @@ tailwind = { config: { theme: { extend: {
 
       <!-- Channel Width — third -->
       <div class="rounded-2xl border border-white/10 bg-gray-900/60 backdrop-blur p-6">
-        <label class="block text-sm font-semibold text-gray-300 mb-4">OFDM Channel Width</label>
-        <div class="flex gap-2 flex-wrap">
-          <button onclick="setChannelWidth(24)"  id="cw-24"  class="cw-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all">24 MHz</button>
-          <button onclick="setChannelWidth(96)"  id="cw-96"  class="cw-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all">96 MHz</button>
-          <button onclick="setChannelWidth(192)" id="cw-192" class="cw-btn px-4 py-2 rounded-lg text-sm font-semibold border transition-all active">192 MHz</button>
+        <div class="flex items-center justify-between mb-4">
+          <label class="text-sm font-semibold text-gray-300">OFDM Channel Width</label>
+          <span id="cw-label" class="text-neon font-display font-700 text-lg">192 MHz</span>
+        </div>
+        <input type="range" id="cw-slider" class="w-full" min="24" max="384" step="8" value="192"
+               oninput="setChannelWidth(+this.value)">
+        <div class="flex justify-between text-xs text-gray-600 mt-2">
+          <span>24</span><span>96</span><span>192</span><span>288</span>
+          <span class="text-docsis40 font-semibold">384 ← D4.0</span>
         </div>
       </div>
 
@@ -1275,7 +1287,7 @@ tailwind = { config: { theme: { extend: {
         <div class="px-2 py-0.5 rounded-md bg-neon/15 text-neon font-display font-700 text-sm shrink-0 mt-0.5">Split</div>
         <div>
           <div class="text-white font-semibold text-sm mb-1">Return Path Split Point</div>
-          <p class="text-gray-500 text-xs leading-relaxed">The frequency boundary dividing upstream from downstream spectrum. Common splits: <strong class="text-gray-300">Low (85 MHz) · Mid (204 MHz) · High (300 MHz) · ESD (684 MHz)</strong>. Higher splits allocate more spectrum to upstream but require replacing diplex filters in every amplifier and tap on the coax plant.</p>
+          <p class="text-gray-500 text-xs leading-relaxed">The frequency boundary dividing upstream from downstream spectrum. Standard splits: <strong class="text-gray-300">Sub/Low (42 MHz) · Mid (85 MHz) · High (204 MHz) · Ultra-High (396 MHz) · ESD (492/684 MHz)</strong>. Higher splits allocate more spectrum to upstream but require replacing diplex filters in every amplifier and tap on the coax plant.</p>
         </div>
       </div>
     </div>
@@ -1389,10 +1401,12 @@ const ATDMA_CH_MHZ     = 6.4;
 const CODING_RATE_SCQAM = 0.94;
 
 const SPLITS = {
-  low:  { name: 'Low-split',     usMax:  85, docsis: 'D3.0 / D3.1'       },
-  mid:  { name: 'Mid-split',     usMax: 204, docsis: 'D3.1 mid-split'     },
-  high: { name: 'High-split',    usMax: 300, docsis: 'D3.1 high-split'    },
-  esd:  { name: 'Ext. Spectrum', usMax: 684, docsis: 'D4.0 ESD'           },
+  low:    { name: 'Sub/Low-split', usMax:  42, docsis: 'D3.0'     },
+  mid:    { name: 'Mid-split',     usMax:  85, docsis: 'D3.1'     },
+  high:   { name: 'High-split',    usMax: 204, docsis: 'D3.1+'    },
+  uhs:    { name: 'Ultra-High',    usMax: 396, docsis: 'D4.0'     },
+  esd492: { name: 'ESD 492',       usMax: 492, docsis: 'D4.0 ESD' },
+  esd684: { name: 'ESD 684',       usMax: 684, docsis: 'D4.0 ESD' },
 };
 const MAX_FREQS = [1002, 1218, 1794];
 
@@ -1401,14 +1415,14 @@ const OFDMA_US = {
   96: { active: 3500, spacing: 25 },
 };
 
-const OFDM_CONFIGS = [
-  { width: 24,  spacing: 25, total: 960,  active: 860,  symRate:  25e3, docsis: ['3.1','3.1+','4.0'] },
-  { width: 24,  spacing: 50, total: 480,  active: 430,  symRate:  50e3, docsis: ['3.1','3.1+','4.0'] },
-  { width: 96,  spacing: 25, total: 3840, active: 3500, symRate:  25e3, docsis: ['3.1','3.1+','4.0'] },
-  { width: 96,  spacing: 50, total: 1920, active: 1750, symRate:  50e3, docsis: ['3.1','3.1+','4.0'] },
-  { width: 192, spacing: 25, total: 7680, active: 7040, symRate:  25e3, docsis: ['3.1','3.1+','4.0'] },
-  { width: 192, spacing: 50, total: 3840, active: 3520, symRate:  50e3, docsis: ['3.1','3.1+','4.0'] },
-];
+// Dynamic OFDM config — valid for any width in [24..384] MHz (step 8 MHz).
+// Guard-band formula derived from DOCSIS 3.1 data points (24/96/192 MHz).
+function calcOfdmConfig(width, spacing) {
+  const total   = Math.round((width * 1000) / spacing);
+  const excl25  = Math.round(23 + width * 3.2); // linear fit: 24→100, 96→330, 192→637
+  const excluded = spacing === 25 ? excl25 : Math.round(excl25 / 2);
+  return { width, spacing, total, active: total - excluded, symRate: spacing * 1e3 };
+}
 
 /* ─── State ─── */
 let state = {
@@ -1444,8 +1458,7 @@ function calcATDMA(channels, qam) {
 }
 
 function getConfig() {
-  return OFDM_CONFIGS.find(c => c.width === state.channelWidth && c.spacing === state.spacing)
-      || OFDM_CONFIGS[4];
+  return calcOfdmConfig(state.channelWidth, state.spacing);
 }
 
 function formatBps(bps) {
@@ -1457,8 +1470,8 @@ function formatBps(bps) {
 /* ─── Button helpers ─── */
 function setChannelWidth(w) {
   state.channelWidth = w;
-  document.querySelectorAll('.cw-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('cw-' + w).classList.add('active');
+  document.getElementById('cw-label').textContent = w + ' MHz';
+  document.getElementById('cw-slider').value = w;
   updateCalc();
 }
 function setSpacing(s) {
@@ -1777,7 +1790,7 @@ function updateSpectrumSummary(totalUsBps, atdmaBps, ofdmaBps, atdmaMhz, ofdmaMh
   document.getElementById('sp-ds-detail').textContent = `SC-QAM ${fmtSC.val} ${fmtSC.unit} + OFDM ${fmtOF.val} ${fmtOF.unit}`;
 
   // ── Minimum Compatible DOCSIS callout ──
-  const _splitRank = { low: 0, mid: 1, high: 2, esd: 3 };
+  const _splitRank = { low: 0, mid: 1, high: 2, uhs: 3, esd492: 3, esd684: 3 };
   const _freqRank  = { 1002: 0, 1218: 1, 1794: 3 };
   const _compat = [
     { version: '3.0',  name: 'DOCSIS 3.0',        color: '#8a8c2a', color2: '#b0b240', rgb: '138,140,42'  },
@@ -1792,18 +1805,19 @@ function updateSpectrumSummary(totalUsBps, atdmaBps, ofdmaBps, atdmaMhz, ofdmaMh
 
   // Context-aware description
   const _splitDrives = _sr >= _fr, _freqDrives = _fr >= _sr;
+  const _usMax = (SPLITS[state.splitType] || SPLITS.low).usMax;
   const _descs = [
-    () => 'Low-split with 1002 MHz downstream — fully supported by DOCSIS 3.0 SC-QAM channel bonding.',
+    () => 'Sub/Low-split with 5–42 MHz upstream — fully supported by DOCSIS 3.0 SC-QAM channel bonding.',
     () => _splitDrives && _freqDrives
             ? 'Mid-split upstream and 1218 MHz downstream both require OFDMA/OFDM introduced in DOCSIS 3.1.'
             : _splitDrives
-              ? 'Mid-split upstream (to 204 MHz) requires OFDMA channel support introduced in DOCSIS 3.1.'
+              ? 'Mid-split upstream (to 85 MHz) requires OFDMA channel support introduced in DOCSIS 3.1.'
               : '1218 MHz downstream requires OFDM channel support introduced in DOCSIS 3.1.',
-    () => 'High-split upstream (to 300 MHz) requires Full Duplex OFDMA with echo cancellation — DOCSIS 3.1+.',
+    () => 'High-split upstream (to 204 MHz) requires Full Duplex OFDMA with echo cancellation — DOCSIS 3.1+.',
     () => _splitDrives && _freqDrives
-            ? 'ESD upstream (to 684 MHz) and 1794 MHz downstream both require Extended Spectrum DOCSIS 4.0.'
+            ? `${SPLITS[state.splitType]?.name ?? 'ESD'} upstream (to ${_usMax} MHz) and 1794 MHz downstream both require Extended Spectrum DOCSIS 4.0.`
             : _splitDrives
-              ? 'ESD upstream (to 684 MHz) requires Extended Spectrum DOCSIS 4.0.'
+              ? `${SPLITS[state.splitType]?.name ?? 'ESD'} upstream (to ${_usMax} MHz) requires Extended Spectrum DOCSIS 4.0.`
               : '1794 MHz downstream requires Extended Spectrum DOCSIS 4.0.',
   ];
 
@@ -1820,7 +1834,7 @@ function updateSpectrumSummary(totalUsBps, atdmaBps, ofdmaBps, atdmaMhz, ofdmaMh
 
 /* ─── Button styles ─── */
 function applyBtnStyles() {
-  document.querySelectorAll('.cw-btn, .sc-btn').forEach(btn => {
+  document.querySelectorAll('.sc-btn').forEach(btn => {
     if (btn.classList.contains('active')) {
       btn.classList.remove('border-white/10','text-gray-400','bg-transparent');
       btn.classList.add('border-neon/50','text-neon','bg-neon/10');
@@ -1863,13 +1877,15 @@ function applyMixedBtnStyles() {
 
 function applyPlantBtnStyles() {
   const btnColors = {
-    'split-low':  ['border-docsis30/50','text-docsis30','bg-docsis30/10'],
-    'split-mid':  ['border-docsis31/50','text-docsis31','bg-docsis31/10'],
-    'split-high': ['border-docsis31p/50','text-docsis31p','bg-docsis31p/10'],
-    'split-esd':  ['border-docsis40/50','text-docsis40','bg-docsis40/10'],
-    'freq-1002':  ['border-docsis30/50','text-docsis30','bg-docsis30/10'],
-    'freq-1218':  ['border-docsis31/50','text-docsis31','bg-docsis31/10'],
-    'freq-1794':  ['border-docsis40/50','text-docsis40','bg-docsis40/10'],
+    'split-low':    ['border-docsis30/50','text-docsis30','bg-docsis30/10'],
+    'split-mid':    ['border-docsis31/50','text-docsis31','bg-docsis31/10'],
+    'split-high':   ['border-docsis31p/50','text-docsis31p','bg-docsis31p/10'],
+    'split-uhs':    ['border-docsis40/50','text-docsis40','bg-docsis40/10'],
+    'split-esd492': ['border-docsis40/50','text-docsis40','bg-docsis40/10'],
+    'split-esd684': ['border-docsis40/50','text-docsis40','bg-docsis40/10'],
+    'freq-1002':    ['border-docsis30/50','text-docsis30','bg-docsis30/10'],
+    'freq-1218':    ['border-docsis31/50','text-docsis31','bg-docsis31/10'],
+    'freq-1794':    ['border-docsis40/50','text-docsis40','bg-docsis40/10'],
   };
   const allActiveClasses = [
     'border-neon/50','text-neon','bg-neon/10',
