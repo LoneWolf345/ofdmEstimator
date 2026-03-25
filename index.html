@@ -599,8 +599,8 @@ tailwind = { config: { theme: { extend: {
           <label class="text-sm font-semibold text-gray-300">OFDM Channel Width</label>
           <span id="cw-label" class="text-neon font-display font-700 text-lg">192 MHz</span>
         </div>
-        <input type="range" id="cw-slider" class="w-full" min="24" max="384" step="8" value="192"
-               oninput="setChannelWidth(+this.value)">
+        <input type="range" id="cw-slider" class="w-full slider-neon" min="24" max="384" step="8" value="192"
+               oninput="setChannelWidth(+this.value)" style="--val:46.67%">
         <div class="flex justify-between text-xs text-gray-600 mt-2">
           <span>24</span><span>96</span><span>192</span><span>288</span>
           <span class="text-docsis40 font-semibold">384 ← D4.0</span>
@@ -1471,7 +1471,9 @@ function formatBps(bps) {
 function setChannelWidth(w) {
   state.channelWidth = w;
   document.getElementById('cw-label').textContent = w + ' MHz';
-  document.getElementById('cw-slider').value = w;
+  const sl = document.getElementById('cw-slider');
+  sl.value = w;
+  sl.style.setProperty('--val', ((w - 24) / (384 - 24) * 100).toFixed(2) + '%');
   updateCalc();
 }
 function setSpacing(s) {
